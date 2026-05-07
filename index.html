@@ -11,7 +11,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>나만의 다이어리 v1.0</title>
+<title>나만의 다이어리 v2.0</title>
 <style>
 /* ── FONT ── */
 @import url('https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&display=swap');
@@ -423,19 +423,30 @@ textarea{resize:none;min-height:80px;line-height:1.6}
 .bucket-prog{background:#E0D8FF;border-radius:20px;height:10px;overflow:hidden;flex:1;margin-left:10px}
 .bucket-fill{height:100%;background:linear-gradient(90deg,var(--lav),var(--mint));border-radius:20px;transition:width .6s cubic-bezier(.34,1.56,.64,1)}
 
-/* ══ BGM PLAYER ══ */
-.bgm-bar{
-  position:sticky;top:0;z-index:50;
-  background:linear-gradient(135deg,rgba(195,164,255,.95),rgba(255,143,171,.95));
+/* ══ DDAY HOME WIDGET ══ */
+.dday-widgets{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.dday-widget-row{display:flex;gap:6px;flex-wrap:wrap}
+.dday-widget{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.7);
   backdrop-filter:blur(8px);
-  padding:10px 16px;
-  display:flex;align-items:center;gap:10px;
-  border-bottom:2px solid rgba(255,255,255,.3);
+  border-radius:16px;padding:8px 13px;
+  border:1.5px solid rgba(255,255,255,.9);
+  cursor:pointer;
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1);
+  flex:1;min-width:0;
 }
-.bgm-title{font-size:13px;color:#fff;font-family:'Gaegu',sans-serif;font-weight:700;flex:1}
-.bgm-btn{background:rgba(255,255,255,.25);border:none;border-radius:20px;padding:6px 14px;color:#fff;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;transition:background .15s}
-.bgm-btn:active{background:rgba(255,255,255,.4)}
-.bgm-now{font-size:11px;color:rgba(255,255,255,.8);font-family:'Gaegu',sans-serif;font-weight:700}
+.dday-widget:active{transform:scale(.94)}
+.dw-ico{font-size:18px;flex-shrink:0}
+.dw-info{min-width:0;flex:1}
+.dw-name{font-size:11px;color:rgba(61,43,74,.8);font-family:'Gaegu',sans-serif;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dw-count{font-size:14px;color:#fff;font-family:'Jua',sans-serif;text-shadow:0 1px 0 rgba(0,0,0,.15)}
+.dw-count.today-c{color:var(--yel)}
+.dw-count.past-c{color:rgba(255,255,255,.6)}
+
+/* 날짜/시간 클릭 영역 */
+.hd-datetime-clickable{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.hd-datetime-clickable:active .dt-badge{background:rgba(255,255,255,.45)}
 
 /* ══ WEATHER ══ */
 .weather-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
@@ -699,10 +710,11 @@ textarea{resize:none;min-height:80px;line-height:1.6}
     <span class="hd-star">💫</span>
     <div class="hd-greeting" id="hd-greeting">안녕하세요! 👋</div>
     <div class="hd-title" id="hd-title">나만의 다이어리 ✨</div>
-    <div class="hd-datetime" id="hd-datetime">
+    <div class="hd-datetime-clickable" id="hd-datetime">
       <span class="dt-badge" id="dt-date">📅 로딩 중...</span>
       <span class="dt-badge" id="dt-time">🕐 --:--:--</span>
     </div>
+    <div class="dday-widgets" id="hd-dday-widgets"></div>
     <div class="hd-mood-row">
       <span class="hd-mood-lbl">오늘 기분?</span>
       <div class="hd-moods" id="hd-moods">
@@ -719,7 +731,6 @@ textarea{resize:none;min-height:80px;line-height:1.6}
   </div>
 
   <div class="ct">
-    <div id="home-dday-banner"></div>
 
     <div class="motiv-strip" id="motiv-strip">
       <span class="motiv-ico">💪</span>
@@ -855,17 +866,6 @@ textarea{resize:none;min-height:80px;line-height:1.6}
     </div>
 
     <div id="di-write-view">
-      <!-- BGM 바 -->
-      <div class="bgm-bar">
-        <div>
-          <div class="bgm-title">🎵 집중 BGM</div>
-          <div class="bgm-now" id="bgm-now">음악을 선택해봐요</div>
-        </div>
-        <button class="bgm-btn" data-url="https://www.youtube.com/watch?v=5qap5aO4i9A" data-name="로파이 힙합 📻">로파이</button>
-        <button class="bgm-btn" data-url="https://www.youtube.com/watch?v=lTRiuFIWV54" data-name="피아노 음악 🎹">피아노</button>
-        <button class="bgm-btn" data-url="https://www.youtube.com/watch?v=DWcJFNfaw9c" data-name="자연 소리 🌿">자연</button>
-      </div>
-
       <div class="card card-yel" style="margin-top:14px">
         <div class="ctitle">✏️ 오늘 일기</div>
         <!-- 날씨 -->
@@ -1073,7 +1073,7 @@ textarea{resize:none;min-height:80px;line-height:1.6}
 'use strict';
 
 /* ─ 버전 관리 — 기능 추가할 때마다 숫자 올려주세요 ─ */
-var APP_VERSION = '1.0';
+var APP_VERSION = '2.0';
 var STORAGE_KEY = 'd_v1';
 
 /* ─ 버전 체크: 버전이 다르면 캐시 무시하고 새로고침 ─ */
@@ -1190,6 +1190,9 @@ function go(page){
   if(page==='friends') initFriends();
   if(page==='prof')    renderProfile();
 }
+
+// 날짜·시간 배지 클릭 → 달력으로 이동
+g('hd-datetime').addEventListener('click', function(){ go('cal'); });
 
 var nis=document.querySelectorAll('.ni');
 for(var _i=0;_i<nis.length;_i++){
@@ -1308,24 +1311,50 @@ g('motiv-strip').addEventListener('click',function(){
 /* old initHome removed */
 
 function renderHomeDday(){
-  var banner=g('home-dday-banner'); if(!banner) return;
-  banner.innerHTML='';
+  var wrap=g('hd-dday-widgets'); if(!wrap) return;
+  wrap.innerHTML='';
   if(!D.ddays||!D.ddays.length) return;
   var now=new Date(); now.setHours(0,0,0,0);
-  var upcoming=[];
-  for(var i=0;i<D.ddays.length;i++){
-    var d=new Date(D.ddays[i].date); d.setHours(0,0,0,0);
-    var diff=Math.round((d-now)/86400000);
-    if(diff>=0) upcoming.push({dd:D.ddays[i],diff:diff});
-  }
-  upcoming.sort(function(a,b){return a.diff-b.diff;});
-  if(!upcoming.length) return;
-  var top=upcoming[0];
-  banner.innerHTML='<div class="dday-banner">'
-    +'<span class="ddb-ico">'+top.dd.ico+'</span>'
-    +'<div><div class="ddb-count">D-'+(top.diff===0?'DAY':top.diff)+'</div>'
-    +'<div class="ddb-name">'+esc(top.dd.name)+'</div>'
-    +'<div class="ddb-date">'+top.dd.date+'</div></div></div>';
+  // 정렬: 지난 것 제외하고 가까운 순, 최대 3개
+  var list=D.ddays.map(function(dd){
+    var d=new Date(dd.date); d.setHours(0,0,0,0);
+    return {dd:dd, diff:Math.round((d-now)/86400000)};
+  }).sort(function(a,b){ return Math.abs(a.diff)-Math.abs(b.diff); }).slice(0,3);
+
+  var row=document.createElement('div'); row.className='dday-widget-row';
+  list.forEach(function(item){
+    var diff=item.diff, dd=item.dd;
+    var cStr= diff>0?'D-'+diff : diff===0?'D-DAY':'D+'+Math.abs(diff);
+    var cCls= diff===0?'today-c': diff<0?'past-c':'';
+
+    var widget=document.createElement('div'); widget.className='dday-widget';
+    widget.innerHTML=
+      '<span class="dw-ico">'+dd.ico+'</span>'
+      +'<div class="dw-info">'
+        +'<div class="dw-name">'+esc(dd.name)+'</div>'
+        +'<div class="dw-count '+cCls+'">'+cStr+'</div>'
+      +'</div>';
+
+    // 위젯 클릭 → 달력 D-Day 탭으로 이동
+    widget.addEventListener('click',function(){
+      go('cal');
+      setTimeout(function(){
+        // D-Day 탭 활성화
+        var ddTab=g('cal-tab-dday');
+        if(ddTab){
+          ddTab.classList.add('on');
+          var calTab=g('cal-tab-calendar');
+          if(calTab) calTab.classList.remove('on');
+          var cv=g('cal-view'); var dv=g('dday-view');
+          if(cv) cv.style.display='none';
+          if(dv) dv.style.display='block';
+          renderDdayList();
+        }
+      },120);
+    });
+    row.appendChild(widget);
+  });
+  wrap.appendChild(row);
 }
 
 /* ─ TASK CHECKLIST ─ */
@@ -1874,22 +1903,6 @@ function renderBucketList(){
     row.appendChild(ico); row.appendChild(txt); row.appendChild(chk); row.appendChild(del);
     el.appendChild(row);
   });
-}
-
-/* ══════════════════════════════
-   BGM PLAYER
-══════════════════════════════ */
-var bgmBtns=document.querySelectorAll('.bgm-btn');
-for(var _bi=0;_bi<bgmBtns.length;_bi++){
-  (function(btn){
-    btn.addEventListener('click',function(){
-      var url=btn.getAttribute('data-url');
-      var name=btn.getAttribute('data-name');
-      window.open(url,'_blank');
-      g('bgm-now').textContent='▶ '+name+' 재생 중';
-      toast('🎵 유튜브에서 음악이 열려요!');
-    });
-  })(bgmBtns[_bi]);
 }
 
 /* ══════════════════════════════
