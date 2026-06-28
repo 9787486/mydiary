@@ -579,6 +579,102 @@ textarea{resize:none;min-height:80px;line-height:1.6}
   .pin-dots{margin:10px 0}
   .pin-pad{gap:8px;max-width:240px}
 }
+
+/* ══ THEME VARIABLES ══ */
+body.theme-mint  { --pink:#5ED9B8; --lpink:#B8F0E2; --dpink:#1A9C7A; }
+body.theme-lav   { --pink:#C3A4FF; --lpink:#DFD0FF; --dpink:#7040C0; }
+body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
+
+/* ══ THEME PICKER ══ */
+.theme-picker { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.theme-dot {
+  width:38px; height:38px; border-radius:50%; cursor:pointer;
+  border:3px solid #fff; box-shadow:0 3px 8px rgba(0,0,0,.15);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.theme-dot:active { transform:scale(.85); }
+.theme-dot.active { box-shadow:0 0 0 3px #fff, 0 0 0 5px var(--pink); transform:scale(1.12); }
+
+/* ══ PRAISE CARD ══ */
+.praise-card {
+  background:linear-gradient(135deg,#FFF0F8,#F0EEFF);
+  border:2.5px solid var(--lpink); border-radius:var(--rb);
+  padding:14px 18px; margin-bottom:12px;
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+}
+.praise-card:active { transform:scale(.97); }
+.praise-ico { font-size:30px; flex-shrink:0; animation:bnc 2s ease-in-out infinite; }
+.praise-txt { font-size:14px; color:var(--text); font-family:'Gaegu',sans-serif; font-weight:700; line-height:1.5; flex:1; }
+.praise-hint { font-size:10px; color:var(--textl); margin-top:4px; font-family:'Gaegu',sans-serif; font-weight:700; }
+
+/* ══ MONTHLY STATS ══ */
+.monthly-card {
+  background:linear-gradient(135deg,var(--pink),var(--lav));
+  border-radius:var(--rb); padding:14px 18px; margin-bottom:12px;
+  box-shadow:0 5px 0 var(--dpink);
+}
+.monthly-title { font-size:13px; color:rgba(255,255,255,.85); font-family:'Gaegu',sans-serif; font-weight:700; margin-bottom:10px; }
+.monthly-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.monthly-item { background:rgba(255,255,255,.22); border-radius:14px; padding:9px 6px; text-align:center; }
+.monthly-num  { font-size:20px; color:#fff; font-family:'Jua',sans-serif; line-height:1; }
+.monthly-lbl  { font-size:10px; color:rgba(255,255,255,.85); font-family:'Gaegu',sans-serif; font-weight:700; margin-top:3px; }
+
+/* ══ BADGES ══ */
+.badge-grid  { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.badge-item  {
+  background:#fff; border-radius:18px; padding:12px 8px; text-align:center;
+  border:2.5px solid var(--lpink); box-shadow:0 4px 0 var(--lpink);
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1);
+}
+.badge-item:active { transform:scale(.9) translateY(3px); }
+.badge-item.locked { opacity:.3; filter:grayscale(1); border-color:#E0E0E0; box-shadow:0 4px 0 #E0E0E0; }
+.badge-ico   { font-size:28px; display:block; margin-bottom:5px; }
+.badge-name  { font-size:10px; color:var(--text); font-family:'Gaegu',sans-serif; font-weight:700; line-height:1.3; }
+.badge-cond  { font-size:9px;  color:var(--textl); margin-top:2px; font-family:'Gaegu',sans-serif; font-weight:700; }
+.badge-new-pop {
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  background:linear-gradient(135deg,var(--pink),var(--lav));
+  border-radius:var(--rb); padding:28px 32px; text-align:center; z-index:500;
+  box-shadow:0 20px 60px rgba(0,0,0,.3); animation:badgePop .5s cubic-bezier(.34,1.56,.64,1);
+  max-width:260px; width:90%;
+}
+@keyframes badgePop { from{opacity:0;transform:translate(-50%,-50%) scale(.5)} to{opacity:1;transform:translate(-50%,-50%) scale(1)} }
+.badge-new-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:499; }
+
+/* ══ BOOKS ══ */
+.book-item {
+  display:flex; align-items:center; gap:12px;
+  background:#fff; border-radius:var(--rb); padding:13px 14px; margin-bottom:10px;
+  border:2.5px solid var(--lpink); box-shadow:0 4px 0 #FFD6E2; position:relative;
+}
+.book-item::before {
+  content:''; position:absolute; top:-5px; right:18px;
+  width:38px; height:12px; border-radius:3px; transform:rotate(-2deg);
+  background:repeating-linear-gradient(90deg,rgba(255,143,171,.4) 0,rgba(255,143,171,.4) 8px,rgba(255,210,220,.4) 8px,rgba(255,210,220,.4) 16px);
+}
+.book-cover { width:42px; height:56px; border-radius:6px; background:linear-gradient(145deg,var(--pink),var(--lav)); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; box-shadow:2px 2px 8px rgba(0,0,0,.15); }
+.book-info  { flex:1; min-width:0; }
+.book-title { font-size:14px; color:var(--text); font-family:'Jua',sans-serif; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.book-meta  { font-size:11px; color:var(--textl); font-family:'Gaegu',sans-serif; font-weight:700; }
+.book-stars { color:var(--yel); font-size:13px; margin-top:3px; }
+.book-del   { position:absolute; top:10px; right:10px; background:none; border:none; color:#CCC; font-size:14px; cursor:pointer; }
+
+/* ══ GRATITUDE ══ */
+.gratitude-card {
+  background:linear-gradient(135deg,#FFFDF0,#FFF5F8);
+  border:2.5px solid #FFE899; border-radius:var(--rb);
+  padding:14px 16px; margin-bottom:12px;
+}
+.grat-title { font-size:13px; color:var(--textm); font-family:'Gaegu',sans-serif; font-weight:700; margin-bottom:10px; }
+.grat-item  { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.grat-num   { width:22px; height:22px; border-radius:50%; background:var(--yel); display:flex; align-items:center; justify-content:center; font-size:11px; font-family:'Jua',sans-serif; flex-shrink:0; }
+.grat-input { flex:1; padding:8px 11px; border-radius:11px; border:2px solid #FFE899; background:#FFFDF0; font-family:'Gaegu',sans-serif; font-weight:700; font-size:13px; color:var(--text); outline:none; }
+.grat-input:focus { border-color:var(--yel); }
+.grat-saved { font-size:13px; color:var(--text); font-family:'Gaegu',sans-serif; font-weight:700; flex:1; line-height:1.4; }
+
+/* ══ PROFILE TABS EXTENDED ══ */
+.prof-badges-view { display:none; }
 </style>
 </head>
 <body>
@@ -731,6 +827,26 @@ textarea{resize:none;min-height:80px;line-height:1.6}
   </div>
 
   <div class="ct">
+
+    <!-- 오늘의 칭찬 카드 -->
+    <div class="praise-card" id="praise-card">
+      <span class="praise-ico" id="praise-ico">🌟</span>
+      <div>
+        <div class="praise-txt" id="praise-txt">탭해서 오늘의 칭찬을 받아봐요!</div>
+        <div class="praise-hint">탭할 때마다 새 칭찬이 와요 💖</div>
+      </div>
+    </div>
+
+    <!-- 이달의 기록 요약 -->
+    <div class="monthly-card" id="monthly-card">
+      <div class="monthly-title" id="monthly-title">📊 이번 달 기록</div>
+      <div class="monthly-grid">
+        <div class="monthly-item"><div class="monthly-num" id="ms-diary">0</div><div class="monthly-lbl">📔 일기</div></div>
+        <div class="monthly-item"><div class="monthly-num" id="ms-task">0</div><div class="monthly-lbl">✅ 할일</div></div>
+        <div class="monthly-item"><div class="monthly-num" id="ms-bucket">0</div><div class="monthly-lbl">🎯 버킷</div></div>
+        <div class="monthly-item"><div class="monthly-num" id="ms-book">0</div><div class="monthly-lbl">📚 독서</div></div>
+      </div>
+    </div>
 
     <div class="motiv-strip" id="motiv-strip">
       <span class="motiv-ico">💪</span>
@@ -890,6 +1006,14 @@ textarea{resize:none;min-height:80px;line-height:1.6}
           <button class="mood-btn" data-m="😴">😴</button>
           <button class="mood-btn" data-m="🤩">🤩</button>
         </div>
+        <!-- 감사 3가지 -->
+        <div class="gratitude-card" id="grat-card">
+          <div class="grat-title">💝 오늘 감사한 것 3가지</div>
+          <div class="grat-item"><div class="grat-num">1</div><input class="grat-input" id="grat1" placeholder="감사한 것을 적어봐요..."></div>
+          <div class="grat-item"><div class="grat-num">2</div><input class="grat-input" id="grat2" placeholder="작은 것도 괜찮아요 🌸"></div>
+          <div class="grat-item"><div class="grat-num">3</div><input class="grat-input" id="grat3" placeholder="오늘도 수고했어요 💖"></div>
+        </div>
+
         <div style="font-size:12px;color:var(--textm);margin-bottom:7px;font-family:'Gaegu',sans-serif;font-weight:700">🌟 스티커 골라봐요</div>
         <div class="stk-grid" id="stk-grid"></div>
         <div style="font-size:12px;color:var(--textl);font-family:'Gaegu',sans-serif;font-weight:700;margin:7px 0 5px">선택된 스티커</div>
@@ -972,6 +1096,8 @@ textarea{resize:none;min-height:80px;line-height:1.6}
     <div class="tab-bar tb-lav">
       <button class="tab-btn on" id="prof-tab-info">👤 프로필</button>
       <button class="tab-btn"    id="prof-tab-growth">📈 성장앨범</button>
+      <button class="tab-btn"    id="prof-tab-badges">🏅 뱃지</button>
+      <button class="tab-btn"    id="prof-tab-books">📚 독서</button>
     </div>
 
     <!-- 프로필 뷰 -->
@@ -1011,6 +1137,37 @@ textarea{resize:none;min-height:80px;line-height:1.6}
       </div>
       <button class="btn btn-lav btn-full" id="add-growth-btn">➕ 키·몸무게 기록하기</button>
     </div>
+
+    <!-- 뱃지 뷰 -->
+    <div id="prof-badges-view" style="display:none">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:14px;color:var(--textm)">획득한 뱃지 <span id="badge-count" style="font-size:22px;color:var(--pink);font-family:'Jua',sans-serif">0</span>개</div>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+
+    <!-- 독서 뷰 -->
+    <div id="prof-books-view" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:13px;color:var(--textm);font-family:'Gaegu',sans-serif;font-weight:700">📚 읽은 책 <span id="book-count" style="color:var(--pink);font-family:'Jua',sans-serif">0</span>권</div>
+        <button class="btn btn-lav btn-sm" id="add-book-btn">+ 책 추가</button>
+      </div>
+      <div id="book-list"></div>
+    </div>
+
+    <!-- 테마 설정 (프로필 하단) -->
+    <div id="prof-theme-section" style="display:none;margin-top:8px">
+      <div class="slabel">🎨 테마 색상</div>
+      <div class="card card-lav">
+        <div class="ctitle">내가 좋아하는 색깔로 바꿔봐요!</div>
+        <div class="theme-picker">
+          <div class="theme-dot" data-theme="pink"  style="background:linear-gradient(135deg,#FF8FAB,#FFD6E2)">🌸</div>
+          <div class="theme-dot" data-theme="mint"  style="background:linear-gradient(135deg,#5ED9B8,#B8F0E2)">🍃</div>
+          <div class="theme-dot" data-theme="lav"   style="background:linear-gradient(135deg,#C3A4FF,#DFD0FF)">💜</div>
+          <div class="theme-dot" data-theme="sky"   style="background:linear-gradient(135deg,#6EC9F5,#C0E8FF)">🩵</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1044,6 +1201,43 @@ textarea{resize:none;min-height:80px;line-height:1.6}
   </div>
 </div>
 
+<!-- ══ ADD BOOK MODAL ══ -->
+<div class="b-modal" id="book-modal">
+  <div class="bm-sheet">
+    <div class="bm-handle"></div>
+    <div class="bm-title">📚 책 기록하기</div>
+    <div class="fld"><label class="flbl">책 제목</label><input type="text" id="bk-title" placeholder="책 이름을 입력해요"></div>
+    <div class="fld"><label class="flbl">작가</label><input type="text" id="bk-author" placeholder="작가 이름 (선택)"></div>
+    <div class="fld">
+      <label class="flbl">별점</label>
+      <div class="chips" id="bk-star-chips">
+        <button class="chip" data-v="1">⭐</button>
+        <button class="chip" data-v="2">⭐⭐</button>
+        <button class="chip" data-v="3">⭐⭐⭐</button>
+        <button class="chip on" data-v="4">⭐⭐⭐⭐</button>
+        <button class="chip" data-v="5">⭐⭐⭐⭐⭐</button>
+      </div>
+    </div>
+    <div class="fld">
+      <label class="flbl">책 표지 아이콘</label>
+      <div class="chips" id="bk-ico-chips">
+        <button class="chip on" data-v="📖">📖</button>
+        <button class="chip" data-v="🧚">🧚</button>
+        <button class="chip" data-v="🦄">🦄</button>
+        <button class="chip" data-v="🌸">🌸</button>
+        <button class="chip" data-v="🐱">🐱</button>
+        <button class="chip" data-v="🌍">🌍</button>
+        <button class="chip" data-v="🔮">🔮</button>
+        <button class="chip" data-v="🏰">🏰</button>
+      </div>
+    </div>
+    <div class="fld"><label class="flbl">한줄 감상</label><input type="text" id="bk-review" placeholder="이 책 어땠어요? 🌸"></div>
+    <div class="fld"><label class="flbl">다 읽은 날짜</label><input type="date" id="bk-date"></div>
+    <button class="btn btn-lav btn-full" id="bk-save">저장하기 ✓</button>
+    <button class="btn btn-ghost btn-full" style="margin-top:8px" id="bk-cancel">취소</button>
+  </div>
+</div>
+
 <!-- ══ ADD GROWTH MODAL ══ -->
 <div class="b-modal" id="growth-modal">
   <div class="bm-sheet">
@@ -1073,7 +1267,7 @@ textarea{resize:none;min-height:80px;line-height:1.6}
 'use strict';
 
 /* ─ 버전 관리 — 기능 추가할 때마다 숫자 올려주세요 ─ */
-var APP_VERSION = '2.0';
+var APP_VERSION = '3.0';
 var STORAGE_KEY = 'd_v1';
 
 /* ─ 버전 체크: 버전이 다르면 캐시 무시하고 새로고침 ─ */
@@ -1096,9 +1290,11 @@ var D = {
   moodLog:{}, events:[], ddays:[], tasks:[], wishes:[],
   diary:{pin:null,entries:[]},
   album:{items:[]},
-  bucket:[],
-  friends:[],
-  growth:[]
+  bucket:[], friends:[], growth:[],
+  books:[],        // 독서 기록
+  badges:{},       // 획득한 뱃지
+  gratitude:{},    // 날짜별 감사 3가지
+  theme:'pink'     // 테마: pink/mint/lav/sky
 };
 
 function save(){
@@ -1816,47 +2012,6 @@ g('prof-pic-in').addEventListener('change',function(){
   var r=new FileReader(); r.onload=function(ev){ D.profile.photo=ev.target.result; save(); renderProfile(); toast('📷 사진 업데이트!'); };
   r.readAsDataURL(file); this.value='';
 });
-function renderProfile(){
-  var p=D.profile;
-  var def=g('prof-pic-def'),img=g('prof-pic-img');
-  if(p.photo){ def.style.display='none'; img.style.display='block'; img.src=p.photo; }
-  else { def.style.display='flex'; img.style.display='none'; }
-  g('prof-name').textContent=p.name||'이름을 입력해주세요';
-  g('prof-mbti').innerHTML=p.mbti?'<span class="prof-mbti-badge">'+p.mbti+'</span>':'';
-  g('prof-bio').textContent=p.bio||'';
-  var infos=[];
-  if(p.birth){ var b=new Date(p.birth); var age=new Date().getFullYear()-b.getFullYear(); infos.push({l:'생년월일',v:p.birth+' (만 '+age+'세)'}); }
-  if(p.blood)  infos.push({l:'혈액형',v:p.blood});
-  if(p.height) infos.push({l:'키',v:p.height+' cm'});
-  if(p.weight) infos.push({l:'몸무게',v:p.weight+' kg'});
-  if(p.school) infos.push({l:'학교',v:p.school});
-  if(p.grade)  infos.push({l:'학년/반',v:p.grade});
-  if(p.addr)   infos.push({l:'주소',v:p.addr});
-  if(p.phone)  infos.push({l:'연락처',v:p.phone});
-  var grid=g('prof-info-grid');
-  if(infos.length){
-    var html='';
-    for(var i=0;i<infos.length;i++) html+='<div class="info-box"><div class="info-lbl">'+infos[i].l+'</div><div class="info-val">'+esc(infos[i].v)+'</div></div>';
-    grid.innerHTML=html;
-  } else {
-    grid.innerHTML='<div style="grid-column:span 2;text-align:center;padding:14px;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700;font-size:14px">프로필을 수정해서 나를 소개해봐요! 🌸</div>';
-  }
-  var hWrap=g('prof-hobbies');
-  if(p.name){
-    var tagData=[
-      {t:'🎹 피아노',c:'linear-gradient(135deg,#FF8FAB,#FF9ABB)'},
-      {t:'🎨 미술',c:'linear-gradient(135deg,#C3A4FF,#D4A5FF)'},
-      {t:'🏊 수영',c:'linear-gradient(135deg,#6EC9F5,#8DD8FF)'},
-      {t:'🌍 영어',c:'linear-gradient(135deg,#5ED9B8,#7AE8CC)'}
-    ];
-    var th='';
-    for(var ti=0;ti<tagData.length;ti++) th+='<span class="hobby-tag" style="background:'+tagData[ti].c+'">'+tagData[ti].t+'</span>';
-    if(p.bio) th+='<p style="width:100%;margin-top:10px;font-size:13px;color:var(--textm);font-family:Gaegu,sans-serif;font-weight:700;line-height:1.5">'+esc(p.bio)+'</p>';
-    hWrap.innerHTML=th;
-  } else {
-    hWrap.innerHTML='<span style="font-size:14px;color:var(--textm);font-family:Gaegu,sans-serif;font-weight:700">프로필을 입력하면 여기에 표시돼요!</span>';
-  }
-}
 
 /* ══════════════════════════════
    BUCKET LIST
@@ -2136,57 +2291,245 @@ function renderGrowthChart(){
    DIARY — weather 저장 반영
 ══════════════════════════════ */
 
-/* ─ INIT ─ */
-load();
+/* ══════════════════════════════
+   오늘의 칭찬 카드
+══════════════════════════════ */
+var PRAISES = [
+  {i:'🌟', t:'너는 정말 특별한 사람이야! 세상에 딱 하나뿐인 존재야 ✨'},
+  {i:'💖', t:'오늘도 열심히 살아줘서 고마워! 네가 자랑스러워 🥰'},
+  {i:'🎵', t:'피아노 연습하는 너, 진짜 멋있어! 계속 해봐 🎹'},
+  {i:'🏊', t:'수영할 때 너무 멋있어! 물고기처럼 헤엄쳐 🐟'},
+  {i:'🎨', t:'너의 그림엔 특별한 느낌이 있어! 예술가 기질 있는걸? 🖌️'},
+  {i:'📚', t:'공부하는 너, 최고야! 노력은 절대 배신 안 해 💪'},
+  {i:'🌈', t:'네 웃음이 주변을 환하게 만들어! 오늘도 많이 웃어 😄'},
+  {i:'🦋', t:'매일 조금씩 성장하는 네가 보여! 정말 대단해 🌱'},
+  {i:'💝', t:'친구들한테 친절한 너, 진짜 좋은 사람이야! 💕'},
+  {i:'⭐', t:'실수해도 괜찮아! 그게 다 배움이 되는 거야 🌸'},
+  {i:'🎀', t:'오늘 하루도 최선을 다한 너에게 박수! 👏👏👏'},
+  {i:'🌺', t:'네가 있어서 세상이 더 아름다워! 정말이야 💖'},
+  {i:'🦄', t:'꿈을 향해 달려가는 너, 멈추지 마! 응원해 🔥'},
+  {i:'🍀', t:'오늘 좋은 일이 생길 것 같은 느낌? 행운의 날이야! 🍀'}
+];
+var lastPraiseIdx = -1;
+function pickPraise(){
+  var idx; var tries=0;
+  do{ idx=Math.floor(Math.random()*PRAISES.length); tries++; }
+  while(idx===lastPraiseIdx && PRAISES.length>1 && tries<10);
+  lastPraiseIdx=idx;
+  var p=PRAISES[idx];
+  var ico=g('praise-ico'); var txt=g('praise-txt');
+  if(ico) ico.textContent=p.i;
+  if(txt) txt.textContent=p.t;
+}
+var praiseCard=g('praise-card');
+if(praiseCard) praiseCard.addEventListener('click', function(){ pickPraise(); toast('💖 새 칭찬!'); });
 
-// diary save — weather 포함 업데이트
-g('di-save').addEventListener('click',function(){
-  var txt=g('di-txt').value.trim(); if(!txt){ toast('일기 내용을 써봐요! ✏️'); return; }
-  if(!D.diary.entries) D.diary.entries=[];
-  D.diary.entries.unshift({
-    id:'d'+Date.now(),text:txt,mood:curMood,
-    weather:curWeather,
-    stickers:dStickers.slice(),
-    date:todayStr(),dt:nowStr()
+/* ══════════════════════════════
+   이달의 기록 요약
+══════════════════════════════ */
+function renderMonthlyStats(){
+  var now=new Date(); var y=now.getFullYear(); var mo=now.getMonth()+1;
+  var prefix=y+'-'+(mo<10?'0':'')+mo;
+  // 일기
+  var dCnt=(D.diary.entries||[]).filter(function(e){ return e.date&&e.date.startsWith(prefix); }).length;
+  // 할일 완료
+  var tCnt=(D.tasks||[]).filter(function(t){ return t.done&&t.date&&t.date.startsWith(prefix); }).length;
+  // 버킷 완료
+  var bCnt=(D.bucket||[]).filter(function(b){ return b.done&&b.year===y; }).length;
+  // 독서
+  var bookCnt=(D.books||[]).filter(function(bk){ return bk.date&&bk.date.startsWith(prefix); }).length;
+  var mtEl=g('monthly-title');
+  if(mtEl) mtEl.textContent='📊 '+y+'년 '+mo+'월 기록';
+  ['diary','task','bucket','book'].forEach(function(k,i){
+    var el=g('ms-'+k);
+    if(el) el.textContent=[dCnt,tCnt,bCnt,bookCnt][i];
   });
-  if(curMood) D.moodLog[todayStr()]=curMood;
-  g('di-txt').value='';
-  var area=g('stk-area');
-  area.innerHTML='<span class="stk-ph" id="stk-ph">스티커를 탭하면 여기에 추가돼요</span>';
-  dStickers=[]; curMood=''; curWeather='';
-  var all=document.querySelectorAll('.mood-btn'); for(var i=0;i<all.length;i++) all[i].classList.remove('sel');
-  var wbs=document.querySelectorAll('.w-btn'); for(var j=0;j<wbs.length;j++) wbs[j].classList.remove('sel');
-  save(); renderMoodTracker(); toast('📔 일기 저장됨!');
+}
+
+/* ══════════════════════════════
+   감사 일기
+══════════════════════════════ */
+function loadGratitude(){
+  var today=todayStr();
+  if(!D.gratitude) D.gratitude={};
+  var saved=D.gratitude[today]||[];
+  ['grat1','grat2','grat3'].forEach(function(id,i){
+    var el=g(id); if(el) el.value=saved[i]||'';
+  });
+}
+function saveGratitude(){
+  var today=todayStr(); if(!D.gratitude) D.gratitude={};
+  var vals=['grat1','grat2','grat3'].map(function(id){ var el=g(id); return el?el.value.trim():''; });
+  if(vals.some(function(v){ return v; })){ D.gratitude[today]=vals; save(); }
+}
+['grat1','grat2','grat3'].forEach(function(id){
+  var el=g(id); if(el) el.addEventListener('blur', saveGratitude);
 });
 
-// diary list — weather 표시 포함
-function renderDiaryList(){
-  var el=g('di-entries'); if(!el) return;
-  if(!D.diary.entries||!D.diary.entries.length){
-    el.innerHTML='<div class="empty-box"><span class="e-ico">📔</span><span class="e-txt">첫 번째 일기를 써봐요!</span></div>';
+/* ══════════════════════════════
+   뱃지 시스템
+══════════════════════════════ */
+var BADGE_DEF = [
+  {id:'diary1',  ico:'📔', name:'일기 첫 걸음', cond:'일기 1편 작성',    fn:function(){ return (D.diary.entries||[]).length>=1; }},
+  {id:'diary5',  ico:'✏️', name:'일기 작가',    cond:'일기 5편 작성',    fn:function(){ return (D.diary.entries||[]).length>=5; }},
+  {id:'diary10', ico:'📖', name:'일기 마니아',  cond:'일기 10편 작성',   fn:function(){ return (D.diary.entries||[]).length>=10; }},
+  {id:'diary30', ico:'🏆', name:'일기 챔피언',  cond:'일기 30편 작성',   fn:function(){ return (D.diary.entries||[]).length>=30; }},
+  {id:'task5',   ico:'✅', name:'할일 완료왕',  cond:'할 일 5개 완료',   fn:function(){ return (D.tasks||[]).filter(function(t){ return t.done; }).length>=5; }},
+  {id:'wish3',   ico:'⭐', name:'소원 수집가',  cond:'소원 3개 이상',    fn:function(){ return (D.wishes||[]).length>=3; }},
+  {id:'bucket1', ico:'🎯', name:'도전 완료!',   cond:'버킷 1개 달성',    fn:function(){ return (D.bucket||[]).some(function(b){ return b.done; }); }},
+  {id:'bucket3', ico:'🌟', name:'도전왕',       cond:'버킷 3개 달성',    fn:function(){ return (D.bucket||[]).filter(function(b){ return b.done; }).length>=3; }},
+  {id:'friend1', ico:'👭', name:'친구 추가',    cond:'친구 1명 등록',    fn:function(){ return (D.friends||[]).length>=1; }},
+  {id:'photo5',  ico:'📸', name:'추억 수집가',  cond:'사진 5장 등록',    fn:function(){ return (D.album.items||[]).filter(function(i){ return i.type==='photo'; }).length>=5; }},
+  {id:'book1',   ico:'📚', name:'독서 시작',    cond:'책 1권 기록',      fn:function(){ return (D.books||[]).length>=1; }},
+  {id:'book5',   ico:'🤓', name:'독서왕',       cond:'책 5권 기록',      fn:function(){ return (D.books||[]).length>=5; }},
+  {id:'growth1', ico:'📏', name:'성장 기록',    cond:'키·몸무게 첫 기록',fn:function(){ return (D.growth||[]).length>=1; }},
+  {id:'grat1',   ico:'💝', name:'감사 일기',    cond:'감사 일기 첫 작성',fn:function(){ var g2=D.gratitude||{}; return Object.keys(g2).some(function(k){ return (g2[k]||[]).some(function(v){ return v; }); }); }},
+  {id:'dday1',   ico:'⏳', name:'D-Day 설정',  cond:'D-Day 1개 추가',   fn:function(){ return (D.ddays||[]).length>=1; }},
+  {id:'profile', ico:'👤', name:'프로필 완성',  cond:'프로필 정보 입력', fn:function(){ return !!(D.profile.name&&D.profile.birth); }}
+];
+
+function checkBadges(){
+  if(!D.badges) D.badges={};
+  BADGE_DEF.forEach(function(bd){
+    if(!D.badges[bd.id] && bd.fn()){
+      D.badges[bd.id]=true; save();
+      showBadgePop(bd);
+    }
+  });
+}
+
+function showBadgePop(bd){
+  var overlay=document.createElement('div'); overlay.className='badge-new-overlay';
+  var pop=document.createElement('div'); pop.className='badge-new-pop';
+  pop.innerHTML='<div style="font-size:52px;margin-bottom:10px">'+bd.ico+'</div>'
+    +'<div style="font-size:18px;color:#fff;font-family:Jua,sans-serif;margin-bottom:6px">🏅 뱃지 획득!</div>'
+    +'<div style="font-size:15px;color:rgba(255,255,255,.95);font-family:Gaegu,sans-serif;font-weight:700;margin-bottom:4px">'+bd.name+'</div>'
+    +'<div style="font-size:12px;color:rgba(255,255,255,.8);font-family:Gaegu,sans-serif;font-weight:700;margin-bottom:18px">'+bd.cond+'</div>'
+    +'<button style="background:rgba(255,255,255,.3);border:none;border-radius:20px;padding:9px 24px;color:#fff;font-family:Jua,sans-serif;font-size:14px;cursor:pointer">확인!</button>';
+  document.body.appendChild(overlay); document.body.appendChild(pop);
+  pop.querySelector('button').addEventListener('click',function(){
+    document.body.removeChild(overlay); document.body.removeChild(pop);
+  });
+  overlay.addEventListener('click',function(){
+    document.body.removeChild(overlay); document.body.removeChild(pop);
+  });
+}
+
+function renderBadges(){
+  var grid=g('badge-grid'); var cntEl=g('badge-count');
+  if(!grid) return;
+  if(!D.badges) D.badges={};
+  var earned=Object.keys(D.badges).filter(function(k){ return D.badges[k]; }).length;
+  if(cntEl) cntEl.textContent=earned;
+  grid.innerHTML='';
+  BADGE_DEF.forEach(function(bd){
+    var got=!!D.badges[bd.id];
+    var item=document.createElement('div'); item.className='badge-item'+(got?'':' locked');
+    item.innerHTML='<span class="badge-ico">'+bd.ico+'</span>'
+      +'<div class="badge-name">'+bd.name+'</div>'
+      +'<div class="badge-cond">'+bd.cond+'</div>';
+    grid.appendChild(item);
+  });
+}
+
+/* ══════════════════════════════
+   독서 기록
+══════════════════════════════ */
+oneChipGroup('bk-star-chips');
+oneChipGroup('bk-ico-chips');
+var addBookBtn=g('add-book-btn');
+if(addBookBtn) addBookBtn.addEventListener('click',function(){
+  g('bk-date').value=todayStr(); openModal('book-modal');
+});
+var bkCancel=g('bk-cancel'); if(bkCancel) bkCancel.addEventListener('click',function(){ closeModal('book-modal'); });
+var bookModal=g('book-modal'); if(bookModal) bookModal.addEventListener('click',function(e){ if(e.target===this) closeModal('book-modal'); });
+var bkSave=g('bk-save'); if(bkSave) bkSave.addEventListener('click',function(){
+  var title=g('bk-title').value.trim(); if(!title){ toast('책 제목을 입력해주세요!'); return; }
+  if(!D.books) D.books=[];
+  D.books.unshift({
+    id:'bk'+Date.now(), title:title,
+    author:g('bk-author').value.trim(),
+    star:parseInt(getChipVal('bk-star-chips')||'4',10),
+    ico:getChipVal('bk-ico-chips')||'📖',
+    review:g('bk-review').value.trim(),
+    date:g('bk-date').value||todayStr()
+  });
+  g('bk-title').value=''; g('bk-author').value=''; g('bk-review').value='';
+  save(); closeModal('book-modal'); renderBooks(); checkBadges(); renderMonthlyStats();
+  toast('📚 독서 기록 완료!'); spawnStars();
+});
+
+function renderBooks(){
+  var el=g('book-list'); var cntEl=g('book-count'); if(!el) return;
+  if(!D.books) D.books=[];
+  if(cntEl) cntEl.textContent=D.books.length;
+  if(!D.books.length){
+    el.innerHTML='<div class="empty-box"><span class="e-ico">📚</span><span class="e-txt">읽은 책을 기록해봐요!</span></div>';
     return;
   }
   el.innerHTML='';
-  for(var i=0;i<D.diary.entries.length;i++){
-    (function(e,idx){
-      var d=document.createElement('div'); d.className='diary-entry';
-      var top=document.createElement('div'); top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px';
-      var left=document.createElement('div'); left.style.cssText='display:flex;align-items:center;gap:6px';
-      if(e.weather){ var wsp=document.createElement('span'); wsp.style.fontSize='18px'; wsp.textContent=e.weather; left.appendChild(wsp); }
-      if(e.mood){ var em=document.createElement('span'); em.style.fontSize='18px'; em.textContent=e.mood; left.appendChild(em); }
-      var dt=document.createElement('span'); dt.style.cssText='font-size:11px;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700'; dt.textContent=e.dt; left.appendChild(dt);
-      var del=document.createElement('button'); del.style.cssText='background:none;border:none;color:#CCC;font-size:14px;cursor:pointer'; del.textContent='✕';
-      del.addEventListener('click',function(){ if(confirm('이 일기를 삭제할까요?')){ D.diary.entries.splice(idx,1); save(); renderDiaryList(); } });
-      top.appendChild(left); top.appendChild(del); d.appendChild(top);
-      if(e.stickers&&e.stickers.length){ var stk=document.createElement('div'); stk.style.cssText='font-size:20px;margin-bottom:6px'; stk.textContent=e.stickers.join(''); d.appendChild(stk); }
-      var body=document.createElement('div'); body.style.cssText='font-size:14px;color:var(--text);line-height:1.7;font-family:Gaegu,sans-serif;font-weight:700';
-      body.innerHTML=esc(e.text).replace(/\n/g,'<br>'); d.appendChild(body);
-      el.appendChild(d);
-    })(D.diary.entries[i],i);
-  }
+  D.books.forEach(function(bk,idx){
+    var item=document.createElement('div'); item.className='book-item';
+    var stars=''; for(var s=0;s<(bk.star||4);s++) stars+='⭐';
+    item.innerHTML='<div class="book-cover">'+bk.ico+'</div>'
+      +'<div class="book-info">'
+        +'<div class="book-title">'+esc(bk.title)+'</div>'
+        +'<div class="book-meta">'+(bk.author?esc(bk.author)+' · ':'')+bk.date+'</div>'
+        +'<div class="book-stars">'+stars+'</div>'
+        +(bk.review?'<div style="font-size:12px;color:var(--textm);font-family:Gaegu,sans-serif;font-weight:700;margin-top:3px">'+esc(bk.review)+'</div>':'')
+      +'</div>';
+    var del=document.createElement('button'); del.className='book-del'; del.textContent='✕';
+    del.addEventListener('click',function(){
+      if(confirm('이 책 기록을 삭제할까요?')){ D.books.splice(idx,1); save(); renderBooks(); renderMonthlyStats(); }
+    });
+    item.appendChild(del); el.appendChild(item);
+  });
 }
 
-// initHome — bucket 포함
+/* ══════════════════════════════
+   테마 색상
+══════════════════════════════ */
+function applyTheme(theme){
+  document.body.className=document.body.className.replace(/theme-\w+/g,'').trim();
+  if(theme&&theme!=='pink') document.body.classList.add('theme-'+theme);
+  document.querySelectorAll('.theme-dot').forEach(function(dot){
+    dot.classList.toggle('active', dot.getAttribute('data-theme')===theme);
+  });
+}
+document.querySelectorAll('.theme-dot').forEach(function(dot){
+  dot.addEventListener('click',function(){
+    var theme=dot.getAttribute('data-theme');
+    D.theme=theme; save(); applyTheme(theme); toast('🎨 테마 변경됨!');
+  });
+});
+
+/* ══════════════════════════════
+   프로필 탭 (4개로 확장)
+══════════════════════════════ */
+var profViews=['info','growth','badges','books'];
+function switchProfTab(tab){
+  profViews.forEach(function(v){
+    var el=g('prof-'+v+'-view'); if(el) el.style.display=v===tab?'block':'none';
+    var btn=g('prof-tab-'+v); if(btn) btn.classList.toggle('on',v===tab);
+  });
+  // 테마 설정은 info 탭에서만 표시
+  var themeSection=g('prof-theme-section');
+  if(themeSection) themeSection.style.display=tab==='info'?'block':'none';
+  if(tab==='badges') renderBadges();
+  if(tab==='books')  renderBooks();
+}
+['info','growth','badges','books'].forEach(function(tab){
+  var btn=g('prof-tab-'+tab);
+  if(btn) btn.addEventListener('click',function(){ switchProfTab(tab); });
+});
+
+/* ─ INIT ─ */
+load();
+
+// 테마 적용
+applyTheme(D.theme||'pink');
+
+// initHome — 새 기능 포함
 function initHome(){
   updateClock();
   var n=D.profile.name;
@@ -2198,16 +2541,67 @@ function initHome(){
   var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   g('quote-txt').textContent=q.t; g('quote-src').textContent=q.s;
   g('motiv-txt').textContent=MOTIVS[Math.floor(Math.random()*MOTIVS.length)];
-  pickTip();
-  renderTaskList();
-  renderMoodTracker();
-  renderWishMini();
-  renderBucketList();
+  pickTip(); pickPraise();
+  renderTaskList(); renderMoodTracker(); renderWishMini();
+  renderBucketList(); renderMonthlyStats();
 }
+
+// renderProfile — 테마 섹션 표시 포함
+function renderProfile(){
+  var p=D.profile;
+  var def=g('prof-pic-def'),img=g('prof-pic-img');
+  if(p.photo){ def.style.display='none'; img.style.display='block'; img.src=p.photo; }
+  else { def.style.display='flex'; img.style.display='none'; }
+  g('prof-name').textContent=p.name||'이름을 입력해주세요';
+  g('prof-mbti').innerHTML=p.mbti?'<span class="prof-mbti-badge">'+p.mbti+'</span>':'';
+  g('prof-bio').textContent=p.bio||'';
+  var infos=[];
+  if(p.birth){ var b=new Date(p.birth); var age=new Date().getFullYear()-b.getFullYear(); infos.push({l:'생년월일',v:p.birth+' (만 '+age+'세)'}); }
+  if(p.blood)  infos.push({l:'혈액형',v:p.blood});
+  if(p.height) infos.push({l:'키',v:p.height+' cm'});
+  if(p.weight) infos.push({l:'몸무게',v:p.weight+' kg'});
+  if(p.school) infos.push({l:'학교',v:p.school});
+  if(p.grade)  infos.push({l:'학년/반',v:p.grade});
+  if(p.addr)   infos.push({l:'주소',v:p.addr});
+  if(p.phone)  infos.push({l:'연락처',v:p.phone});
+  var grid=g('prof-info-grid');
+  if(infos.length){
+    var html=''; for(var i=0;i<infos.length;i++) html+='<div class="info-box"><div class="info-lbl">'+infos[i].l+'</div><div class="info-val">'+esc(infos[i].v)+'</div></div>';
+    grid.innerHTML=html;
+  } else {
+    grid.innerHTML='<div style="grid-column:span 2;text-align:center;padding:14px;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700;font-size:14px">프로필을 수정해서 나를 소개해봐요! 🌸</div>';
+  }
+  var tagData=[
+    {t:'🎹 피아노',c:'linear-gradient(135deg,#FF8FAB,#FF9ABB)'},
+    {t:'🎨 미술',c:'linear-gradient(135deg,#C3A4FF,#D4A5FF)'},
+    {t:'🏊 수영',c:'linear-gradient(135deg,#6EC9F5,#8DD8FF)'},
+    {t:'🌍 영어',c:'linear-gradient(135deg,#5ED9B8,#7AE8CC)'}
+  ];
+  var hWrap=g('prof-hobbies');
+  if(p.name){
+    var th=''; for(var ti=0;ti<tagData.length;ti++) th+='<span class="hobby-tag" style="background:'+tagData[ti].c+'">'+tagData[ti].t+'</span>';
+    if(p.bio) th+='<p style="width:100%;margin-top:10px;font-size:13px;color:var(--textm);font-family:Gaegu,sans-serif;font-weight:700;line-height:1.5">'+esc(p.bio)+'</p>';
+    hWrap.innerHTML=th;
+  } else {
+    hWrap.innerHTML='<span style="font-size:14px;color:var(--textm);font-family:Gaegu,sans-serif;font-weight:700">프로필을 입력하면 여기에 표시돼요!</span>';
+  }
+  // 테마 섹션 표시 + 현재 테마 반영
+  var ts=g('prof-theme-section'); if(ts) ts.style.display='block';
+  applyTheme(D.theme||'pink');
+  checkBadges();
+}
+
+// 일기 저장 시 감사일기 + 뱃지 체크
+var diSaveBtn=g('di-save');
+if(diSaveBtn) diSaveBtn.addEventListener('click',function(){
+  saveGratitude();
+  setTimeout(checkBadges, 300);
+},true);
 
 initHome();
 renderCalendar();
 renderProfile();
+loadGratitude();
 
 })();
 </script>
