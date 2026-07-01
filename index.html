@@ -40,26 +40,45 @@ body{
   background-size:22px 22px;
   color:var(--text);
   min-height:100vh;
+  min-height:-webkit-fill-available; /* ✅ iOS 주소바 대응 */
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
 
-/* ── PAGES ── */
+/* ✅ Pages - iOS 100vh 대응 */
 .page{
   display:none;
   min-height:100vh;
+  min-height:-webkit-fill-available;
   padding-bottom:90px;
-  opacity:1;
-  visibility:visible;
 }
-.page.active{
-  display:block;
-  animation:pgIn .25s ease-out;
+.page.active{display:block;animation:pgIn .25s ease-out}
+
+/* ✅ Fix 5: 모달 시트 관성 스크롤 (iOS 튕김 효과) */
+.bm-sheet, .tm-sheet{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
 }
-@keyframes pgIn{
-  from{opacity:0;transform:translateY(12px)}
-  to  {opacity:1;transform:translateY(0)}
+.hd-moods{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
 }
+.coll-tabs{
+  -webkit-overflow-scrolling:touch;
+  overflow-x:auto;
+  flex-wrap:nowrap;
+  padding-bottom:4px;
+}
+
+/* ✅ Fix 6: 긴 텍스트 튀어나옴 방지 */
+.coll-txt,.fc-name,.book-title,.dd-name,.wm-txt,.bi-txt,.act-txt,.prompt-txt{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  word-break:break-word;
+  overflow-wrap:break-word;
+}
+.badge-name,.badge-cond{word-break:keep-all}
+.diary-entry{overflow:hidden;word-break:break-word}
 
 /* ══ HOME HEADER ══ */
 .home-hd{
@@ -161,12 +180,16 @@ input[type=text],input[type=date],input[type=number],input[type=tel],select,text
   width:100%;padding:11px 13px;
   border-radius:13px;border:2.5px solid var(--lpink);
   background:var(--paper);
-  font-family:'Gaegu',sans-serif;font-weight:700;font-size:14px;color:var(--text);
+  font-family:'Gaegu',sans-serif;font-weight:700;
+  font-size:16px; /* ✅ iOS 자동 확대 방지: 16px 이상 필수 */
+  color:var(--text);
   outline:none;-webkit-appearance:none;
   transition:border-color .2s,box-shadow .2s;
+  -webkit-text-size-adjust:100%; /* ✅ 텍스트 크기 자동조정 방지 */
 }
 input:focus,select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,143,171,.18)}
 textarea{resize:none;min-height:80px;line-height:1.6}
+.grat-input{font-size:16px!important} /* ✅ gratitude input도 16px */
 .flbl{font-size:12px;color:var(--textl);display:block;margin-bottom:4px;font-family:'Gaegu',sans-serif;font-weight:700}
 .fld{margin-bottom:10px}
 .frow{display:flex;gap:8px;margin-top:8px}
@@ -266,22 +289,51 @@ textarea{resize:none;min-height:80px;line-height:1.6}
 .tc-txt{font-size:14px;color:#fff;font-family:'Gaegu',sans-serif;font-weight:700;line-height:1.6;min-height:46px}
 .tc-footer{font-size:10px;color:rgba(255,255,255,.75);margin-top:9px;font-family:'Gaegu',sans-serif;font-weight:700}
 
-/* Checklist */
-.task-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:2px dashed var(--lpink)}
-.task-row:last-child{border-bottom:none}
-.task-cb{width:22px;height:22px;accent-color:var(--pink);cursor:pointer;flex-shrink:0}
-.task-txt{flex:1;font-size:14px;color:var(--text);font-family:'Gaegu',sans-serif;font-weight:700}
-.task-txt.done{text-decoration:line-through;color:var(--textl)}
-.task-del{background:none;border:none;color:#CCC;font-size:15px;cursor:pointer}
+/* ══ VIBE PICKER (오늘의 나는?) ══ */
+.vibe-card{background:#fff;border-radius:var(--rb);padding:14px;margin-bottom:12px;border:2.5px solid var(--lpink);box-shadow:0 5px 0 #FFD6E2}
+.vibe-title{font-size:13px;color:var(--textm);font-family:'Gaegu',sans-serif;font-weight:700;margin-bottom:10px}
+.vibe-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.vibe-btn{background:#FFF5F8;border:2.5px solid transparent;border-radius:14px;padding:10px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s cubic-bezier(.34,1.56,.64,1);font-family:'Jua',sans-serif}
+.vibe-btn:active{transform:scale(.88)}
+.vibe-btn.sel{background:var(--lpink);border-color:var(--pink);transform:scale(1.07);box-shadow:0 4px 0 var(--lpink)}
+.vibe-ico{font-size:22px;line-height:1}
+.vibe-lbl{font-size:10px;color:var(--textm)}
+.vibe-btn.sel .vibe-lbl{color:var(--dpink)}
+.vibe-result{margin-top:10px;padding:10px 13px;background:linear-gradient(135deg,var(--lpink),#F0EEFF);border-radius:14px;font-size:13px;color:var(--text);font-family:'Gaegu',sans-serif;font-weight:700;min-height:20px;line-height:1.5;display:none}
+.vibe-result.show{display:block}
 
-/* Mood Tracker */
-.mood-tracker{display:flex;flex-direction:column;gap:5px}
-.mt-bars{display:flex;gap:5px;align-items:flex-end;height:64px;justify-content:space-around}
-.mt-bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
-.mt-bar{width:100%;border-radius:6px 6px 0 0;min-height:5px;transition:height .5s ease}
-.mt-emo{font-size:14px;line-height:1}
-.mt-days{display:flex;justify-content:space-around}
-.mt-day{flex:1;text-align:center;font-size:10px;color:var(--textl);font-family:'Gaegu',sans-serif;font-weight:700}
+/* ══ ACTIVITY CARD ══ */
+.activity-card{background:linear-gradient(135deg,#FFF8E0,#FFF0F8);border:2.5px solid #FFE899;border-radius:var(--rb);padding:16px 18px;margin-bottom:12px}
+.act-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.act-title{font-size:13px;color:var(--textm);font-family:'Gaegu',sans-serif;font-weight:700}
+.act-shuffle{background:var(--yel);border:none;border-radius:20px;padding:6px 14px;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;box-shadow:0 3px 0 var(--dyel);transition:transform .12s,box-shadow .12s;color:var(--text)}
+.act-shuffle:active{transform:translateY(3px);box-shadow:0 0 0 var(--dyel)}
+.act-content{display:flex;align-items:center;gap:12px}
+.act-ico{font-size:36px;flex-shrink:0;animation:bnc 2s ease-in-out infinite}
+.act-body{flex:1}
+.act-txt{font-size:15px;color:var(--text);font-family:'Gaegu',sans-serif;font-weight:700;line-height:1.5}
+.act-tag{display:inline-block;background:rgba(255,224,64,.4);border-radius:20px;padding:3px 10px;font-size:11px;color:#A07000;font-family:'Gaegu',sans-serif;font-weight:700;margin-top:5px}
+
+/* ══ COLLECTION (좋아요 모음) ══ */
+.coll-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.coll-tab{padding:7px 13px;border-radius:20px;border:2.5px solid var(--lpink);background:#fff;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;color:var(--textm);transition:all .18s;white-space:nowrap}
+.coll-tab.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+.coll-item{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:14px;background:#FFF5F8;border:2px solid var(--lpink);margin-bottom:8px}
+.coll-ico{font-size:20px;flex-shrink:0}
+.coll-info{flex:1;min-width:0}
+.coll-txt{font-size:14px;color:var(--text);font-family:'Gaegu',sans-serif;font-weight:700}
+.coll-sub{font-size:11px;color:var(--textl);font-family:'Gaegu',sans-serif;font-weight:700;margin-top:2px}
+.coll-del{background:none;border:none;color:#CCC;font-size:14px;cursor:pointer;flex-shrink:0}
+
+/* ══ CREATIVE STORY (내 이야기) ══ */
+.prompt-card{background:linear-gradient(135deg,#F5F0FF,#FFF0F8);border:2.5px dashed var(--lav);border-radius:var(--rb);padding:13px 16px;margin-bottom:12px;cursor:pointer;transition:transform .15s}
+.prompt-card:active{transform:scale(.97)}
+.prompt-lbl{font-size:11px;color:var(--dlav);font-family:'Gaegu',sans-serif;font-weight:700;margin-bottom:5px}
+.prompt-txt{font-size:14px;color:var(--text);font-family:'Gaegu',sans-serif;font-weight:700;line-height:1.5}
+.prompt-hint{font-size:10px;color:var(--textl);margin-top:5px;font-family:'Gaegu',sans-serif;font-weight:700}
+.story-type-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.stype-btn{padding:6px 13px;border-radius:20px;border:2.5px solid var(--lpink);background:#fff;font-family:'Jua',sans-serif;font-size:12px;cursor:pointer;color:var(--textm);transition:all .18s;white-space:nowrap}
+.stype-btn.on{background:var(--pink);color:#fff;border-color:var(--pink)}
 
 /* Wish Mini */
 .wish-mini{
@@ -841,8 +893,8 @@ body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
     <div class="monthly-card" id="monthly-card">
       <div class="monthly-title" id="monthly-title">📊 이번 달 기록</div>
       <div class="monthly-grid">
-        <div class="monthly-item"><div class="monthly-num" id="ms-diary">0</div><div class="monthly-lbl">📔 일기</div></div>
-        <div class="monthly-item"><div class="monthly-num" id="ms-task">0</div><div class="monthly-lbl">✅ 할일</div></div>
+        <div class="monthly-item"><div class="monthly-num" id="ms-diary">0</div><div class="monthly-lbl">📔 이야기</div></div>
+        <div class="monthly-item"><div class="monthly-num" id="ms-task">0</div><div class="monthly-lbl">⭐ 좋아요</div></div>
         <div class="monthly-item"><div class="monthly-num" id="ms-bucket">0</div><div class="monthly-lbl">🎯 버킷</div></div>
         <div class="monthly-item"><div class="monthly-num" id="ms-book">0</div><div class="monthly-lbl">📚 독서</div></div>
       </div>
@@ -865,22 +917,37 @@ body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
       <div class="tc-footer">탭 → 새 팁  |  길게 누르기 → 전체 팁 보기</div>
     </button>
 
-    <div class="sec">오늘 할 일 ✅</div>
-    <div class="card" id="task-card">
-      <div id="task-list"><div style="text-align:center;padding:10px;color:var(--textl);font-size:13px;font-family:'Gaegu',sans-serif;font-weight:700">오늘 할 일을 추가해봐요! 🌸</div></div>
-      <div class="frow">
-        <input type="text" id="task-in" placeholder="오늘 할 일 추가 🌸" style="flex:1">
-        <button class="btn btn-sm" id="task-add">추가</button>
+    <!-- 오늘의 나는? (바이브 피커) -->
+    <div class="sec">오늘의 나는? 🌈</div>
+    <div class="vibe-card">
+      <div class="vibe-title">지금 이 순간 나의 느낌은? 탭해봐요!</div>
+      <div class="vibe-grid" id="vibe-grid">
+        <button class="vibe-btn" data-v="🦁" data-t="오늘은 용감하고 씩씩한 사자! 무엇이든 할 수 있어 💪"><span class="vibe-ico">🦁</span><span class="vibe-lbl">용감한</span></button>
+        <button class="vibe-btn" data-v="🌸" data-t="오늘은 사랑스럽고 따뜻한 봄꽃 같은 날 🌸"><span class="vibe-ico">🌸</span><span class="vibe-lbl">사랑스러운</span></button>
+        <button class="vibe-btn" data-v="⚡" data-t="에너지가 넘치는 날! 뭐든 신나게 해봐요 ⚡"><span class="vibe-ico">⚡</span><span class="vibe-lbl">에너지!</span></button>
+        <button class="vibe-btn" data-v="🌙" data-t="조용하고 차분한 날. 나만의 시간을 즐겨요 🌙"><span class="vibe-ico">🌙</span><span class="vibe-lbl">조용한</span></button>
+        <button class="vibe-btn" data-v="🎵" data-t="음악처럼 리듬감 있는 하루가 될 거예요 🎵"><span class="vibe-ico">🎵</span><span class="vibe-lbl">신나는</span></button>
+        <button class="vibe-btn" data-v="🌊" data-t="자유롭고 넓은 바다처럼 시원한 느낌! 🌊"><span class="vibe-ico">🌊</span><span class="vibe-lbl">자유로운</span></button>
+        <button class="vibe-btn" data-v="🌈" data-t="오늘 좋은 일이 일어날 것 같은 예감! 🌈"><span class="vibe-ico">🌈</span><span class="vibe-lbl">설레는</span></button>
+        <button class="vibe-btn" data-v="🍀" data-t="오늘은 행운이 가득한 날이야! 🍀"><span class="vibe-ico">🍀</span><span class="vibe-lbl">행운의</span></button>
       </div>
+      <div class="vibe-result" id="vibe-result"></div>
     </div>
 
-    <div class="sec">이번 주 기분 📊</div>
-    <div class="card card-sky" style="padding:14px" id="mood-card">
-      <div class="mood-tracker">
-        <div class="mt-bars" id="mt-bars"></div>
-        <div class="mt-days" id="mt-days"></div>
+    <!-- 오늘 뭐 해볼까? (랜덤 활동) -->
+    <div class="sec">오늘 뭐 해볼까? 🎲</div>
+    <div class="activity-card">
+      <div class="act-header">
+        <div class="act-title">✨ 오늘의 추천 활동</div>
+        <button class="act-shuffle" id="act-shuffle">🔀 다시 뽑기</button>
       </div>
-      <div style="font-size:11px;color:var(--textl);font-family:'Gaegu',sans-serif;font-weight:700;margin-top:8px;text-align:center">일기에서 기분을 선택하면 자동으로 기록돼요 😊</div>
+      <div class="act-content">
+        <span class="act-ico" id="act-ico">🎨</span>
+        <div class="act-body">
+          <div class="act-txt" id="act-txt">버튼을 눌러서 오늘의 활동을 뽑아봐요!</div>
+          <div class="act-tag" id="act-tag">창의</div>
+        </div>
+      </div>
     </div>
 
     <div class="sec">나의 소원 🌟</div>
@@ -977,13 +1044,30 @@ body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
 
   <div id="di-content" style="display:none" class="ct">
     <div class="tab-bar tb-yel">
-      <button class="tab-btn on" id="di-tab-write">✏️ 일기 쓰기</button>
-      <button class="tab-btn" id="di-tab-list">📔 모아보기</button>
+      <button class="tab-btn on" id="di-tab-write">✏️ 내 이야기</button>
+      <button class="tab-btn" id="di-tab-list">📖 모아보기</button>
     </div>
 
     <div id="di-write-view">
-      <div class="card card-yel" style="margin-top:14px">
-        <div class="ctitle">✏️ 오늘 일기</div>
+      <!-- 창의적 글쓰기 프롬프트 -->
+      <div class="prompt-card" id="prompt-card">
+        <div class="prompt-lbl">💡 오늘의 글쓰기 질문 (탭하면 바뀌어요!)</div>
+        <div class="prompt-txt" id="prompt-txt">오늘 가장 재미있었던 순간은?</div>
+        <div class="prompt-hint">답해도 되고, 하고 싶은 말을 자유롭게 써도 돼요 🌸</div>
+      </div>
+
+      <div class="card card-yel" style="margin-top:0">
+        <div class="ctitle">✏️ 자유롭게 써봐요</div>
+
+        <!-- 글쓰기 유형 -->
+        <div class="story-type-row">
+          <button class="stype-btn on" data-t="이야기">💬 이야기</button>
+          <button class="stype-btn" data-t="느낌">💭 느낌</button>
+          <button class="stype-btn" data-t="상상">🌈 상상</button>
+          <button class="stype-btn" data-t="감사">💝 감사</button>
+          <button class="stype-btn" data-t="비밀">🤫 비밀</button>
+        </div>
+
         <!-- 날씨 -->
         <div class="weather-row">
           <span class="weather-lbl">날씨:</span>
@@ -1006,19 +1090,23 @@ body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
           <button class="mood-btn" data-m="😴">😴</button>
           <button class="mood-btn" data-m="🤩">🤩</button>
         </div>
-        <!-- 감사 3가지 -->
-        <div class="gratitude-card" id="grat-card">
-          <div class="grat-title">💝 오늘 감사한 것 3가지</div>
-          <div class="grat-item"><div class="grat-num">1</div><input class="grat-input" id="grat1" placeholder="감사한 것을 적어봐요..."></div>
-          <div class="grat-item"><div class="grat-num">2</div><input class="grat-input" id="grat2" placeholder="작은 것도 괜찮아요 🌸"></div>
-          <div class="grat-item"><div class="grat-num">3</div><input class="grat-input" id="grat3" placeholder="오늘도 수고했어요 💖"></div>
-        </div>
 
         <div style="font-size:12px;color:var(--textm);margin-bottom:7px;font-family:'Gaegu',sans-serif;font-weight:700">🌟 스티커 골라봐요</div>
         <div class="stk-grid" id="stk-grid"></div>
         <div style="font-size:12px;color:var(--textl);font-family:'Gaegu',sans-serif;font-weight:700;margin:7px 0 5px">선택된 스티커</div>
         <div class="stk-area" id="stk-area"><span class="stk-ph" id="stk-ph">스티커를 탭하면 여기에 추가돼요</span></div>
-        <textarea id="di-txt" style="border-color:#FFE899;background:#FFFBF0" placeholder="오늘 있었던 일, 느낌, 생각을 자유롭게 써봐요... 🌸"></textarea>
+
+        <!-- 감사 3가지 (접이식) -->
+        <div class="gratitude-card" id="grat-card" style="cursor:pointer" >
+          <div class="grat-title" id="grat-toggle-title">💝 오늘 감사한 것 3가지 (선택, 탭해서 펼치기)</div>
+          <div id="grat-fields" style="display:none;margin-top:8px">
+            <div class="grat-item"><div class="grat-num">1</div><input class="grat-input" id="grat1" placeholder="작은 것도 괜찮아요 🌸"></div>
+            <div class="grat-item"><div class="grat-num">2</div><input class="grat-input" id="grat2" placeholder="오늘 좋았던 것은?"></div>
+            <div class="grat-item"><div class="grat-num">3</div><input class="grat-input" id="grat3" placeholder="고마운 사람이나 것은?"></div>
+          </div>
+        </div>
+
+        <textarea id="di-txt" style="border-color:#FFE899;background:#FFFBF0" placeholder="무엇이든 자유롭게 써봐요 ✏️&#10;정답이 없어요. 네 생각이 제일 소중해요 🌸"></textarea>
         <div class="lock-row">
           <button class="btn-lock" id="di-lock">잠그기 🔒</button>
           <button class="btn btn-yel btn-sm" id="di-save">저장 ✓</button>
@@ -1035,20 +1123,39 @@ body.theme-sky   { --pink:#6EC9F5; --lpink:#C0E8FF; --dpink:#2888B8; }
 <!-- ════ FRIENDS ════ -->
 <div id="pg-friends" class="page">
   <div class="phd phd-peach">
-    <div class="phd-title">👭 친구 & 앨범</div>
-    <div class="phd-sub">소중한 사람들과 추억 🌸</div>
+    <div class="phd-title">👭 친구 & 모음</div>
+    <div class="phd-sub">소중한 사람들과 좋아하는 것들 🌸</div>
     <div class="phd-deco">💝</div>
   </div>
   <div class="ct">
     <div class="tab-bar tb-sky">
       <button class="tab-btn on" id="fr-tab-friends">👭 친구수첩</button>
       <button class="tab-btn"    id="fr-tab-album">📸 앨범</button>
+      <button class="tab-btn"    id="fr-tab-collection">⭐ 좋아요</button>
     </div>
 
     <!-- 친구수첩 -->
     <div id="fr-friends-view">
       <div id="friend-list"></div>
       <button class="btn btn-peach btn-full" id="add-friend-btn">➕ 친구 추가하기</button>
+    </div>
+
+    <!-- 좋아요 컬렉션 -->
+    <div id="fr-collection-view" style="display:none">
+      <div class="coll-tabs" id="coll-cat-tabs">
+        <button class="coll-tab on" data-c="노래">🎵 노래</button>
+        <button class="coll-tab"    data-c="음식">🍰 음식</button>
+        <button class="coll-tab"    data-c="장소">🗺️ 장소</button>
+        <button class="coll-tab"    data-c="물건">🎀 물건</button>
+        <button class="coll-tab"    data-c="기타">✨ 기타</button>
+      </div>
+      <div class="card card-peach">
+        <div class="ctitle">➕ 좋아하는 것 추가하기</div>
+        <input type="text" id="coll-name" placeholder="이름을 적어봐요 (예: 좋아하는 노래 제목)" style="margin-bottom:8px;border-color:#FFD4B0;background:#FFF5EF">
+        <input type="text" id="coll-note" placeholder="왜 좋아해요? (선택)" style="border-color:#FFD4B0;background:#FFF5EF">
+        <button class="btn btn-peach btn-full" id="coll-add-btn">추가하기 ✓</button>
+      </div>
+      <div id="coll-list"></div>
     </div>
 
     <!-- 앨범 -->
@@ -1294,7 +1401,8 @@ var D = {
   books:[],        // 독서 기록
   badges:{},       // 획득한 뱃지
   gratitude:{},    // 날짜별 감사 3가지
-  theme:'pink'     // 테마: pink/mint/lav/sky
+  theme:'pink',    // 테마: pink/mint/lav/sky
+  collection:[]    // 좋아요 모음 (노래/음식/장소/물건/기타)
 };
 
 function save(){
@@ -1310,6 +1418,15 @@ function load(){
 /* ─ HELPERS ─ */
 var DAY_KO=['일','월','화','수','목','금','토'];
 function pad(n){ return n<10?'0'+n:''+n; }
+
+/* ✅ Fix 2: iOS에서 new Date('YYYY-MM-DD')는 UTC로 파싱해서 한국 시간 기준 1일 빠름
+   → 로컬 날짜로 직접 파싱하는 함수 추가 */
+function parseLocalDate(str){
+  if(!str) return new Date();
+  var p=str.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+
 function todayStr(){
   var d=new Date();
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
@@ -1513,7 +1630,7 @@ function renderHomeDday(){
   var now=new Date(); now.setHours(0,0,0,0);
   // 정렬: 지난 것 제외하고 가까운 순, 최대 3개
   var list=D.ddays.map(function(dd){
-    var d=new Date(dd.date); d.setHours(0,0,0,0);
+    var d=parseLocalDate(dd.date); d.setHours(0,0,0,0);
     return {dd:dd, diff:Math.round((d-now)/86400000)};
   }).sort(function(a,b){ return Math.abs(a.diff)-Math.abs(b.diff); }).slice(0,3);
 
@@ -1553,67 +1670,102 @@ function renderHomeDday(){
   wrap.appendChild(row);
 }
 
-/* ─ TASK CHECKLIST ─ */
-g('task-add').addEventListener('click', addTask);
-g('task-in').addEventListener('keydown',function(e){ if(e.key==='Enter'||e.keyCode===13) addTask(); });
+/* ─ 오늘의 나는? (VIBE PICKER) ─ */
+g('vibe-grid').addEventListener('click',function(e){
+  var btn=e.target.closest('.vibe-btn'); if(!btn) return;
+  var all=document.querySelectorAll('.vibe-btn');
+  for(var i=0;i<all.length;i++) all[i].classList.remove('sel');
+  btn.classList.add('sel');
+  var resultEl=g('vibe-result');
+  resultEl.textContent=btn.getAttribute('data-t');
+  resultEl.classList.add('show');
+  // 홈 무드와도 살짝 연동 (선택사항: 별도 저장)
+  if(!D.vibeLog) D.vibeLog={};
+  D.vibeLog[todayStr()]=btn.getAttribute('data-v');
+  save();
+});
 
-function addTask(){
-  var v=g('task-in').value.trim(); if(!v) return;
-  if(!D.tasks) D.tasks=[];
-  D.tasks.push({id:'t'+Date.now(),text:v,done:false,date:todayStr()});
-  g('task-in').value='';
-  save(); renderTaskList(); toast('✅ 추가됨!');
+/* ─ 오늘 뭐 해볼까? (ACTIVITY CARD) ─ */
+var ACTIVITIES=[
+  {ico:'🎨',tag:'창의',txt:'좋아하는 색깔로 자유롭게 낙서해보기! 잘 그릴 필요 없어요'},
+  {ico:'📖',tag:'상상',txt:'좋아하는 이야기 속 주인공이 되어 다음 이야기를 상상해보기'},
+  {ico:'🎵',tag:'음악',txt:'좋아하는 노래 한 곡 듣고 가사 따라 불러보기'},
+  {ico:'🧩',tag:'두뇌',txt:'머릿속으로 미로를 그려보고 출구를 찾아보기'},
+  {ico:'🌱',tag:'관찰',txt:'창밖이나 주변에서 초록색 물건 5개 찾아보기'},
+  {ico:'💌',tag:'마음',txt:'고마운 사람에게 마음속으로 짧은 편지 써보기'},
+  {ico:'🤸',tag:'움직임',txt:'좋아하는 동물 흉내내며 3분 동안 움직여보기'},
+  {ico:'🍪',tag:'미각',txt:'좋아하는 간식 떠올리며 맛을 자세히 설명해보기'},
+  {ico:'🪐',tag:'상상',txt:'만약 우주에 간다면 무엇을 가져갈지 3가지 정해보기'},
+  {ico:'🎭',tag:'표현',txt:'지금 기분을 표정으로만 표현해보기 (거울 보면서!)'},
+  {ico:'🦋',tag:'관찰',txt:'눈을 감고 들리는 소리 3가지를 찾아보기'},
+  {ico:'🏰',tag:'상상',txt:'내가 살고 싶은 상상의 성을 머릿속으로 지어보기'},
+  {ico:'🌈',tag:'창의',txt:'무지개 7가지 색으로 떠오르는 단어 하나씩 말해보기'},
+  {ico:'🎁',tag:'마음',txt:'오늘 누군가에게 작은 친절을 베풀어보기'},
+  {ico:'📷',tag:'관찰',txt:'오늘 본 것 중 가장 예뻤던 것 떠올려보기'},
+  {ico:'🧚',tag:'상상',txt:'내가 요정이라면 어떤 마법을 쓰고 싶은지 상상해보기'}
+];
+var lastActIdx=-1;
+function pickActivity(){
+  var idx; var tries=0;
+  do{ idx=Math.floor(Math.random()*ACTIVITIES.length); tries++; }
+  while(idx===lastActIdx && ACTIVITIES.length>1 && tries<10);
+  lastActIdx=idx;
+  var a=ACTIVITIES[idx];
+  g('act-ico').textContent=a.ico;
+  g('act-txt').textContent=a.txt;
+  g('act-tag').textContent=a.tag;
 }
-function renderTaskList(){
-  var el=g('task-list'); if(!el) return;
-  if(!D.tasks) D.tasks=[];
-  var today=todayStr();
-  var items=[]; for(var i=0;i<D.tasks.length;i++){ if(D.tasks[i].date===today) items.push({item:D.tasks[i],idx:i}); }
-  if(!items.length){
-    el.innerHTML='<div style="text-align:center;padding:10px;color:var(--textl);font-size:13px;font-family:\'Gaegu\',sans-serif;font-weight:700">오늘 할 일을 추가해봐요! 🌸</div>';
-    return;
-  }
-  el.innerHTML='';
-  for(var j=0;j<items.length;j++){
-    (function(item,idx){
-      var row=document.createElement('div'); row.className='task-row';
-      var cb=document.createElement('input'); cb.type='checkbox'; cb.className='task-cb'; cb.checked=item.done;
-      cb.addEventListener('change',function(){ D.tasks[idx].done=cb.checked; save(); renderTaskList(); if(cb.checked) toast('🎉 완료!'); });
-      var txt=document.createElement('div'); txt.className='task-txt'+(item.done?' done':''); txt.textContent=item.text;
-      var del=document.createElement('button'); del.className='task-del'; del.textContent='✕';
-      del.addEventListener('click',function(){ D.tasks.splice(idx,1); save(); renderTaskList(); });
-      row.appendChild(cb); row.appendChild(txt); row.appendChild(del);
-      el.appendChild(row);
-    })(items[j].item, items[j].idx);
-  }
-}
+g('act-shuffle').addEventListener('click',function(){
+  pickActivity();
+  if(!D.actCount) D.actCount=0;
+  D.actCount++; save(); checkBadges();
+  toast('🎲 새 활동!');
+});
 
-/* ─ MOOD TRACKER ─ */
-var MSC={'😊':4,'😄':5,'🥰':5,'🤩':5,'😐':3,'😤':2,'😢':1,'😴':2};
-var MCL={'😊':'#FF8FAB','😄':'#FFB347','🥰':'#C3A4FF','🤩':'#5ED9B8','😐':'#6EC9F5','😤':'#FF7C6E','😢':'#A0C4FF','😴':'#B0A0C4'};
-
-function renderMoodTracker(){
-  var barsEl=g('mt-bars'), daysEl=g('mt-days');
-  if(!barsEl||!daysEl) return;
-  var today=new Date(); today.setHours(0,0,0,0);
-  barsEl.innerHTML=''; daysEl.innerHTML='';
-  for(var i=6;i>=0;i--){
-    var d=new Date(today); d.setDate(d.getDate()-i);
-    var ds=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-    var mood=D.moodLog&&D.moodLog[ds]?D.moodLog[ds]:'';
-    var sc=mood&&MSC[mood]?MSC[mood]:0;
-    var cl=mood&&MCL[mood]?MCL[mood]:'#F0EEF8';
-    var pct=sc>0?Math.round(sc/5*100):7;
-    var col=document.createElement('div'); col.className='mt-bar-col';
-    var bar=document.createElement('div'); bar.className='mt-bar';
-    bar.style.cssText='height:'+pct+'%;background:'+cl+';';
-    var emo=document.createElement('div'); emo.className='mt-emo'; emo.textContent=mood||'·';
-    col.appendChild(bar); col.appendChild(emo); barsEl.appendChild(col);
-    var dayEl=document.createElement('div'); dayEl.className='mt-day';
-    dayEl.textContent=i===0?'오늘':DAY_KO[d.getDay()];
-    daysEl.appendChild(dayEl);
-  }
+/* ─ 글쓰기 프롬프트 (PROMPT CARD) ─ */
+var WRITE_PROMPTS=[
+  '오늘 가장 재미있었던 순간은?',
+  '만약 하루 동안 동물이 될 수 있다면 무엇이 되고 싶어?',
+  '지금 가장 만나고 싶은 사람은 누구야?',
+  '요즘 빠져있는 것은 뭐야?',
+  '오늘 나를 웃게 만든 일이 있었어?',
+  '내가 가진 초능력이 있다면 뭘 하고 싶어?',
+  '요즘 제일 좋아하는 노래는?',
+  '커서 어떤 사람이 되고 싶어?',
+  '오늘 누군가를 도와줬거나 도움을 받았어?',
+  '지금 가장 가고 싶은 곳은 어디야?',
+  '나만 아는 비밀 장소가 있어?',
+  '요즘 자꾸 생각나는 게 있어?',
+  '오늘의 나에게 칭찬 한마디 해준다면?',
+  '제일 좋아하는 계절은 언제고 왜야?',
+  '만약 시간을 멈출 수 있다면 뭘 하고 싶어?'
+];
+var lastPromptIdx=-1;
+function pickPrompt(){
+  var idx; var tries=0;
+  do{ idx=Math.floor(Math.random()*WRITE_PROMPTS.length); tries++; }
+  while(idx===lastPromptIdx && WRITE_PROMPTS.length>1 && tries<10);
+  lastPromptIdx=idx;
+  g('prompt-txt').textContent=WRITE_PROMPTS[idx];
 }
+g('prompt-card').addEventListener('click',function(){ pickPrompt(); });
+
+/* ─ 글쓰기 유형 선택 ─ */
+var curStoryType='이야기';
+document.querySelectorAll('.stype-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.stype-btn').forEach(function(b){ b.classList.remove('on'); });
+    btn.classList.add('on');
+    curStoryType=btn.getAttribute('data-t');
+  });
+});
+
+/* ─ 감사 카드 접기/펼치기 ─ */
+g('grat-toggle-title').addEventListener('click',function(){
+  var fields=g('grat-fields');
+  var isOpen=fields.style.display==='block';
+  fields.style.display=isOpen?'none':'block';
+});
 
 /* ─ WISH ─ */
 g('wish-open-btn').addEventListener('click',function(){ openModal('wish-modal'); });
@@ -1668,7 +1820,7 @@ function getEventsForDate(ds){
   var evs=[];
   if(D.events){ for(var i=0;i<D.events.length;i++){ if(D.events[i].date===ds) evs.push(D.events[i]); } }
   if(D.profile.birth){
-    var b=new Date(D.profile.birth); var parts=ds.split('-');
+    var b=parseLocalDate(D.profile.birth); var parts=ds.split('-');
     if(b.getMonth()+1===parseInt(parts[1],10)&&b.getDate()===parseInt(parts[2],10)){
       evs.unshift({id:'bday',date:ds,title:'🎂 '+(D.profile.name||'나')+'의 생일!',type:'생일',memo:''});
     }
@@ -1690,7 +1842,7 @@ function renderCalendar(){
   var ddMap={};
   if(D.ddays){ for(var ddi=0;ddi<D.ddays.length;ddi++) ddMap[D.ddays[ddi].date]=true; }
   var bdM=0,bdD=0;
-  if(D.profile.birth){ var b=new Date(D.profile.birth); bdM=b.getMonth()+1; bdD=b.getDate(); }
+  if(D.profile.birth){ var b=parseLocalDate(D.profile.birth); bdM=b.getMonth()+1; bdD=b.getDate(); }
 
   for(var ei=0;ei<first;ei++){
     var emp=document.createElement('div'); emp.className='cal-cell empty'; grid.appendChild(emp);
@@ -1777,11 +1929,11 @@ function renderDdayList(){
   var el=g('dd-list'); if(!el) return;
   if(!D.ddays||!D.ddays.length){ el.innerHTML='<div class="empty-box"><span class="e-ico">⏳</span><span class="e-txt">D-Day를 추가해봐요!</span></div>'; return; }
   var now=new Date(); now.setHours(0,0,0,0);
-  var sorted=D.ddays.slice().sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+  var sorted=D.ddays.slice().sort(function(a,b){ return parseLocalDate(a.date)-parseLocalDate(b.date); });
   el.innerHTML='';
   for(var i=0;i<sorted.length;i++){
     (function(dd){
-      var d=new Date(dd.date); d.setHours(0,0,0,0);
+      var d=parseLocalDate(dd.date); d.setHours(0,0,0,0);
       var diff=Math.round((d-now)/86400000);
       var cStr=diff>0?'D-'+diff:diff===0?'D-DAY':'D+'+Math.abs(diff);
       var cCls=diff>0?'':diff===0?' today-d':' past';
@@ -1831,7 +1983,7 @@ for(var _pi=0;_pi<pks.length;_pi++){
 g('pin-back').addEventListener('click',function(){ if(pinBuf.length>0){ pinBuf.pop(); updatePins(); } });
 g('pin-clr').addEventListener('click',function(){ if(pinBuf.length>0){ pinBuf.pop(); updatePins(); } });
 g('pin-reset').addEventListener('click',function(){
-  if(confirm('비밀번호를 초기화할까요?\n(일기 내용은 지워지지 않아요)')){
+  if(confirm('비밀번호를 초기화할까요?')){
     D.diary.pin=null; save();
     g('pin-msg').textContent='새 비밀번호 4자리를 만들어요 🔒';
     g('pin-hint').textContent='처음부터 새로 설정해요';
@@ -1865,12 +2017,13 @@ function checkPin(){
 function unlockDiary(){
   g('di-pin').style.display='none';
   g('di-content').style.display='block';
-  g('di-hd-t').textContent='📔 비밀 일기장';
-  g('di-hd-s').textContent='나만의 소중한 이야기 ✨';
+  g('di-hd-t').textContent='📔 나의 이야기 보관함';
+  g('di-hd-s').textContent='무엇이든 자유롭게 ✨';
   curMood=''; dStickers=[];
   var mbs=document.querySelectorAll('.mood-btn');
   for(var i=0;i<mbs.length;i++) mbs[i].classList.remove('sel');
   renderStkGrid();
+  pickPrompt();
 }
 g('di-lock').addEventListener('click',function(){ pinBuf=[]; setPinMode=false; tempPin=''; openDiary(); });
 
@@ -1941,7 +2094,8 @@ g('alb-video-in').addEventListener('change',function(){
   var cap=g('alb-cap').value.trim(); var id='v'+Date.now();
   vidURLs[id]=URL.createObjectURL(file);
   D.album.items.unshift({type:'video',vidId:id,cap:cap,cat:curAlbCat,date:todayStr()});
-  save(); renderAlbum(); g('alb-cap').value=''; this.value=''; toast('🎬 영상 추가됨!');
+  save(); renderAlbum(); g('alb-cap').value=''; this.value='';
+  toast('🎬 영상 추가됨! ⚠️ 새로고침하면 사라져요');
 });
 g('pm-close').addEventListener('click',function(){ closeModal('ph-modal'); });
 g('ph-modal').addEventListener('click',function(e){ if(e.target===this) closeModal('ph-modal'); });
@@ -1978,7 +2132,17 @@ function renderAlbum(){
   var vEl=g('alb-vids'); vEl.innerHTML='';
   for(var vi=0;vi<videos.length;vi++){
     (function(item){
-      var idx=items.indexOf(item); var src=vidURLs[item.vidId]||''; if(!src) return;
+      var idx=items.indexOf(item); var src=vidURLs[item.vidId]||'';
+      if(!src){
+        // ✅ Fix 3: blob 만료 시 안내 카드 표시
+        var dv=document.createElement('div'); dv.className='vid-item';
+        dv.innerHTML='<div style="padding:16px;text-align:center;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700;font-size:13px">🎬 '+(item.cap||'영상')+'<br><span style=\"font-size:11px\">앱을 새로고침하기 전에 추가된 영상이에요<br>삭제 후 다시 추가해주세요</span></div>'
+          +'<div class="vid-meta"><div class="vid-title">'+(item.cap||'영상')+'</div>';
+        var del2=document.createElement('button'); del2.className='vid-del'; del2.textContent='✕';
+        del2.addEventListener('click',function(){ if(confirm('삭제할까요?')){ D.album.items.splice(idx,1); save(); renderAlbum(); } });
+        dv.innerHTML+='</div>'; dv.querySelector('.vid-meta').appendChild(del2);
+        vEl.appendChild(dv); return;
+      }
       var dv=document.createElement('div'); dv.className='vid-item';
       var vid=document.createElement('video'); vid.src=src; vid.controls=true; vid.setAttribute('playsinline','');
       var meta=document.createElement('div'); meta.className='vid-meta';
@@ -2076,27 +2240,24 @@ for(var _wi=0;_wi<wBtns.length;_wi++){
 }
 
 /* ══════════════════════════════
-   FRIENDS PAGE
+   FRIENDS PAGE (3 tabs: 친구/앨범/좋아요)
 ══════════════════════════════ */
+function switchFrTab(tab){
+  var views={friends:'fr-friends-view',album:'fr-album-view',collection:'fr-collection-view'};
+  Object.keys(views).forEach(function(k){
+    var el=g(views[k]); if(el) el.style.display=k===tab?'block':'none';
+    var btn=g('fr-tab-'+k); if(btn) btn.classList.toggle('on',k===tab);
+  });
+  if(tab==='album') renderAlbum();
+  if(tab==='collection') renderCollection();
+}
 function initFriends(){
   renderFriendList();
-  // default to friends tab
-  g('fr-friends-view').style.display='block';
-  g('fr-album-view').style.display='none';
-  g('fr-tab-friends').classList.add('on');
-  g('fr-tab-album').classList.remove('on');
+  switchFrTab('friends');
 }
-
-// Friends / Album tab switch
-g('fr-tab-friends').addEventListener('click',function(){
-  g('fr-tab-friends').classList.add('on'); g('fr-tab-album').classList.remove('on');
-  g('fr-friends-view').style.display='block'; g('fr-album-view').style.display='none';
-});
-g('fr-tab-album').addEventListener('click',function(){
-  g('fr-tab-album').classList.add('on'); g('fr-tab-friends').classList.remove('on');
-  g('fr-album-view').style.display='block'; g('fr-friends-view').style.display='none';
-  renderAlbum();
-});
+g('fr-tab-friends').addEventListener('click',function(){ switchFrTab('friends'); });
+g('fr-tab-album').addEventListener('click',function(){ switchFrTab('album'); });
+g('fr-tab-collection').addEventListener('click',function(){ switchFrTab('collection'); });
 
 // Add friend modal
 oneChipGroup('fn-emoji-chips');
@@ -2146,7 +2307,7 @@ function renderFriendList(){
     info.appendChild(nm); info.appendChild(det);
     // 생일 임박 뱃지
     if(fr.birth){
-      var b=new Date(fr.birth); var bM=b.getMonth()+1; var bD=b.getDate();
+      var b=parseLocalDate(fr.birth); var bM=b.getMonth()+1; var bD=b.getDate();
       var diff=(bM-nowM)*30+(bD-nowD);
       if(diff>=0&&diff<=7){
         var badge=document.createElement('div'); badge.className='fc-bday-badge';
@@ -2156,7 +2317,7 @@ function renderFriendList(){
     }
     var del=document.createElement('button'); del.className='fc-del'; del.textContent='✕';
     del.addEventListener('click',function(){
-      if(confirm(fr.name+'을(를) 삭제할까요?')){ D.friends.splice(idx,1); save(); renderFriendList(); renderCalendar(); }
+      if(confirm('삭제할까요?')){ D.friends.splice(idx,1); save(); renderFriendList(); renderCalendar(); }
     });
     card.appendChild(av); card.appendChild(info); card.appendChild(del);
     el.appendChild(card);
@@ -2171,7 +2332,7 @@ getEventsForDate=function(ds){
     var parts=ds.split('-'); var dM=parseInt(parts[1],10); var dD=parseInt(parts[2],10);
     D.friends.forEach(function(fr){
       if(fr.birth){
-        var b=new Date(fr.birth);
+        var b=parseLocalDate(fr.birth);
         if(b.getMonth()+1===dM&&b.getDate()===dD){
           evs.push({id:'fr-bday-'+fr.id,date:ds,title:'🎂 '+fr.name+'의 생일!',type:'생일',memo:fr.like?'좋아하는 것: '+fr.like:''});
         }
@@ -2330,10 +2491,10 @@ if(praiseCard) praiseCard.addEventListener('click', function(){ pickPraise(); to
 function renderMonthlyStats(){
   var now=new Date(); var y=now.getFullYear(); var mo=now.getMonth()+1;
   var prefix=y+'-'+(mo<10?'0':'')+mo;
-  // 일기
+  // 이야기(일기)
   var dCnt=(D.diary.entries||[]).filter(function(e){ return e.date&&e.date.startsWith(prefix); }).length;
-  // 할일 완료
-  var tCnt=(D.tasks||[]).filter(function(t){ return t.done&&t.date&&t.date.startsWith(prefix); }).length;
+  // 좋아요 컬렉션 전체 개수
+  var collCnt=(D.collection||[]).length;
   // 버킷 완료
   var bCnt=(D.bucket||[]).filter(function(b){ return b.done&&b.year===y; }).length;
   // 독서
@@ -2342,7 +2503,50 @@ function renderMonthlyStats(){
   if(mtEl) mtEl.textContent='📊 '+y+'년 '+mo+'월 기록';
   ['diary','task','bucket','book'].forEach(function(k,i){
     var el=g('ms-'+k);
-    if(el) el.textContent=[dCnt,tCnt,bCnt,bookCnt][i];
+    if(el) el.textContent=[dCnt,collCnt,bCnt,bookCnt][i];
+  });
+}
+
+/* ══════════════════════════════
+   좋아요 컬렉션
+══════════════════════════════ */
+var curCollCat='노래';
+g('coll-cat-tabs').addEventListener('click',function(e){
+  var btn=e.target.closest('.coll-tab'); if(!btn) return;
+  document.querySelectorAll('#coll-cat-tabs .coll-tab').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  curCollCat=btn.getAttribute('data-c');
+  renderCollection();
+});
+var COLL_ICOS={'노래':'🎵','음식':'🍰','장소':'🗺️','물건':'🎀','기타':'✨'};
+g('coll-add-btn').addEventListener('click',function(){
+  var name=g('coll-name').value.trim(); if(!name){ toast('이름을 입력해주세요!'); return; }
+  if(!D.collection) D.collection=[];
+  D.collection.unshift({id:'c'+Date.now(),name:name,note:g('coll-note').value.trim(),cat:curCollCat,date:todayStr()});
+  g('coll-name').value=''; g('coll-note').value='';
+  save(); renderCollection(); renderMonthlyStats(); toast('⭐ 좋아요 추가됨!'); spawnStars();
+});
+function renderCollection(){
+  var el=g('coll-list'); if(!el) return;
+  if(!D.collection) D.collection=[];
+  var items=D.collection.filter(function(c){ return c.cat===curCollCat; });
+  if(!items.length){
+    el.innerHTML='<div class="empty-box"><span class="e-ico">'+COLL_ICOS[curCollCat]+'</span><span class="e-txt">좋아하는 '+curCollCat+'을(를) 추가해봐요!</span></div>';
+    return;
+  }
+  el.innerHTML='';
+  items.forEach(function(item){
+    var idx=D.collection.indexOf(item);
+    var row=document.createElement('div'); row.className='coll-item';
+    var ico=document.createElement('span'); ico.className='coll-ico'; ico.textContent=COLL_ICOS[item.cat]||'⭐';
+    var info=document.createElement('div'); info.className='coll-info';
+    var txt=document.createElement('div'); txt.className='coll-txt'; txt.textContent=item.name;
+    info.appendChild(txt);
+    if(item.note){ var sub=document.createElement('div'); sub.className='coll-sub'; sub.textContent=item.note; info.appendChild(sub); }
+    var del=document.createElement('button'); del.className='coll-del'; del.textContent='✕';
+    del.addEventListener('click',function(){ D.collection.splice(idx,1); save(); renderCollection(); renderMonthlyStats(); });
+    row.appendChild(ico); row.appendChild(info); row.appendChild(del);
+    el.appendChild(row);
   });
 }
 
@@ -2383,6 +2587,8 @@ var BADGE_DEF = [
   {id:'book1',   ico:'📚', name:'독서 시작',    cond:'책 1권 기록',      fn:function(){ return (D.books||[]).length>=1; }},
   {id:'book5',   ico:'🤓', name:'독서왕',       cond:'책 5권 기록',      fn:function(){ return (D.books||[]).length>=5; }},
   {id:'growth1', ico:'📏', name:'성장 기록',    cond:'키·몸무게 첫 기록',fn:function(){ return (D.growth||[]).length>=1; }},
+  {id:'coll5',   ico:'⭐', name:'수집가',       cond:'좋아요 5개 모으기',fn:function(){ return (D.collection||[]).length>=5; }},
+  {id:'activity10', ico:'🎲', name:'호기심 대장', cond:'활동 10번 뽑기',fn:function(){ return (D.actCount||0)>=10; }},
   {id:'grat1',   ico:'💝', name:'감사 일기',    cond:'감사 일기 첫 작성',fn:function(){ var g2=D.gratitude||{}; return Object.keys(g2).some(function(k){ return (g2[k]||[]).some(function(v){ return v; }); }); }},
   {id:'dday1',   ico:'⏳', name:'D-Day 설정',  cond:'D-Day 1개 추가',   fn:function(){ return (D.ddays||[]).length>=1; }},
   {id:'profile', ico:'👤', name:'프로필 완성',  cond:'프로필 정보 입력', fn:function(){ return !!(D.profile.name&&D.profile.birth); }}
@@ -2480,7 +2686,7 @@ function renderBooks(){
       +'</div>';
     var del=document.createElement('button'); del.className='book-del'; del.textContent='✕';
     del.addEventListener('click',function(){
-      if(confirm('이 책 기록을 삭제할까요?')){ D.books.splice(idx,1); save(); renderBooks(); renderMonthlyStats(); }
+      if(confirm('삭제할까요?')){ D.books.splice(idx,1); save(); renderBooks(); renderMonthlyStats(); }
     });
     item.appendChild(del); el.appendChild(item);
   });
@@ -2541,8 +2747,18 @@ function initHome(){
   var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
   g('quote-txt').textContent=q.t; g('quote-src').textContent=q.s;
   g('motiv-txt').textContent=MOTIVS[Math.floor(Math.random()*MOTIVS.length)];
-  pickTip(); pickPraise();
-  renderTaskList(); renderMoodTracker(); renderWishMini();
+  pickTip(); pickPraise(); pickActivity();
+  // 오늘 이미 고른 vibe가 있으면 반영
+  var savedVibe=(D.vibeLog&&D.vibeLog[todayStr()])||'';
+  document.querySelectorAll('.vibe-btn').forEach(function(b){
+    b.classList.toggle('sel', b.getAttribute('data-v')===savedVibe);
+  });
+  var vr=g('vibe-result');
+  if(savedVibe){
+    var match=document.querySelector('.vibe-btn[data-v="'+savedVibe+'"]');
+    if(match){ vr.textContent=match.getAttribute('data-t'); vr.classList.add('show'); }
+  } else { vr.classList.remove('show'); }
+  renderWishMini();
   renderBucketList(); renderMonthlyStats();
 }
 
@@ -2556,7 +2772,7 @@ function renderProfile(){
   g('prof-mbti').innerHTML=p.mbti?'<span class="prof-mbti-badge">'+p.mbti+'</span>':'';
   g('prof-bio').textContent=p.bio||'';
   var infos=[];
-  if(p.birth){ var b=new Date(p.birth); var age=new Date().getFullYear()-b.getFullYear(); infos.push({l:'생년월일',v:p.birth+' (만 '+age+'세)'}); }
+  if(p.birth){ var b=parseLocalDate(p.birth); var age=new Date().getFullYear()-b.getFullYear(); infos.push({l:'생년월일',v:p.birth+' (만 '+age+'세)'}); }
   if(p.blood)  infos.push({l:'혈액형',v:p.blood});
   if(p.height) infos.push({l:'키',v:p.height+' cm'});
   if(p.weight) infos.push({l:'몸무게',v:p.weight+' kg'});
@@ -2591,12 +2807,104 @@ function renderProfile(){
   checkBadges();
 }
 
-// 일기 저장 시 감사일기 + 뱃지 체크
+// 일기(내 이야기) 저장 — 실제 저장 로직 + 감사일기 + 뱃지 체크
 var diSaveBtn=g('di-save');
 if(diSaveBtn) diSaveBtn.addEventListener('click',function(){
+  var txt=g('di-txt').value.trim();
+  var gratVals=['grat1','grat2','grat3'].map(function(id){ var el=g(id); return el?el.value.trim():''; }).filter(function(v){ return v; });
+  if(!txt && !gratVals.length){ toast('내용을 써보거나 감사한 것을 적어봐요! ✏️'); return; }
+
+  if(!D.diary.entries) D.diary.entries=[];
+  D.diary.entries.unshift({
+    id:'d'+Date.now(),
+    text:txt,
+    storyType:curStoryType,
+    mood:curMood,
+    weather:curWeather,
+    stickers:dStickers.slice(),
+    gratitude:gratVals,
+    date:todayStr(),
+    dt:nowStr()
+  });
+  if(curMood) D.moodLog[todayStr()]=curMood;
+
+  // 입력값 초기화
+  g('di-txt').value='';
+  var stkArea=g('stk-area');
+  if(stkArea) stkArea.innerHTML='<span class="stk-ph" id="stk-ph">스티커를 탭하면 여기에 추가돼요</span>';
+  dStickers=[]; curMood=''; curWeather='';
+  document.querySelectorAll('.mood-btn').forEach(function(b){ b.classList.remove('sel'); });
+  document.querySelectorAll('.w-btn').forEach(function(b){ b.classList.remove('sel'); });
+  document.querySelectorAll('.stype-btn').forEach(function(b){ b.classList.remove('on'); });
+  var firstType=document.querySelector('.stype-btn'); if(firstType) firstType.classList.add('on');
+  curStoryType='이야기';
+  var gFields=g('grat-fields'); if(gFields) gFields.style.display='none';
+  ['grat1','grat2','grat3'].forEach(function(id){ var el=g(id); if(el) el.value=''; });
+
+  save();
   saveGratitude();
+  pickPrompt();
   setTimeout(checkBadges, 300);
-},true);
+  toast('✨ 저장됐어요!'); spawnStars();
+});
+
+var STYPE_ICOS={'이야기':'💬','느낌':'💭','상상':'🌈','감사':'💝','비밀':'🤫'};
+function renderDiaryList(){
+  var el=g('di-entries'); if(!el) return;
+  if(!D.diary.entries||!D.diary.entries.length){
+    el.innerHTML='<div class="empty-box"><span class="e-ico">📖</span><span class="e-txt">첫 번째 이야기를 남겨봐요!</span></div>';
+    return;
+  }
+  el.innerHTML='';
+  D.diary.entries.forEach(function(e,idx){
+    var card=document.createElement('div'); card.className='diary-entry';
+    var top=document.createElement('div');
+    top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px';
+    var left=document.createElement('div'); left.style.cssText='display:flex;align-items:center;gap:7px;flex-wrap:wrap';
+    if(e.storyType){
+      var typeTag=document.createElement('span');
+      typeTag.style.cssText='font-size:11px;background:var(--lpink);color:var(--dpink);padding:2px 9px;border-radius:12px;font-family:Gaegu,sans-serif;font-weight:700';
+      typeTag.textContent=(STYPE_ICOS[e.storyType]||'💬')+' '+e.storyType;
+      left.appendChild(typeTag);
+    }
+    if(e.weather){ var w=document.createElement('span'); w.style.fontSize='16px'; w.textContent=e.weather; left.appendChild(w); }
+    if(e.mood){ var m=document.createElement('span'); m.style.fontSize='16px'; m.textContent=e.mood; left.appendChild(m); }
+    var dt=document.createElement('span'); dt.style.cssText='font-size:11px;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700'; dt.textContent=e.dt; left.appendChild(dt);
+    var del=document.createElement('button'); del.style.cssText='background:none;border:none;color:#CCC;font-size:14px;cursor:pointer';
+    del.textContent='✕';
+    del.addEventListener('click',function(){
+      if(confirm('삭제할까요?')){ D.diary.entries.splice(idx,1); save(); renderDiaryList(); }
+    });
+    top.appendChild(left); top.appendChild(del); card.appendChild(top);
+
+    if(e.stickers && e.stickers.length){
+      var stk=document.createElement('div'); stk.style.cssText='font-size:20px;margin-bottom:6px'; stk.textContent=e.stickers.join('');
+      card.appendChild(stk);
+    }
+    if(e.text){
+      var body=document.createElement('div');
+      body.style.cssText='font-size:14px;color:var(--text);line-height:1.7;font-family:Gaegu,sans-serif;font-weight:700';
+      body.innerHTML=esc(e.text).replace(/\n/g,'<br>');
+      card.appendChild(body);
+    }
+    if(e.gratitude && e.gratitude.length){
+      var gWrap=document.createElement('div');
+      gWrap.style.cssText='margin-top:10px;padding-top:10px;border-top:2px dashed #FFE899';
+      var gTitle=document.createElement('div');
+      gTitle.style.cssText='font-size:11px;color:var(--textl);font-family:Gaegu,sans-serif;font-weight:700;margin-bottom:5px';
+      gTitle.textContent='💝 감사한 것';
+      gWrap.appendChild(gTitle);
+      e.gratitude.forEach(function(gv){
+        var gItem=document.createElement('div');
+        gItem.style.cssText='font-size:13px;color:var(--text);font-family:Gaegu,sans-serif;font-weight:700;margin-bottom:2px';
+        gItem.textContent='· '+gv;
+        gWrap.appendChild(gItem);
+      });
+      card.appendChild(gWrap);
+    }
+    el.appendChild(card);
+  });
+}
 
 initHome();
 renderCalendar();
